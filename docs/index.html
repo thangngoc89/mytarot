@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tron cottage by the Amber stream — Metallic Winter Tarot Reader</title>
+  <meta name="description" content="A self-hosted, full-stack Tarot Reading application featuring precise deck partitioning, animated shuffles, and an interactive metallic winter experience.">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Metallic Winter Stylesheet -->
+  <link rel="stylesheet" href="css/metallic_winter.css">
+</head>
+<body class="p-4 md:p-8">
+
+  <div class="max-w-6xl mx-auto flex flex-col gap-8">
+    
+    <!-- Top Navigation / Header -->
+    <header class="metallic-card p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full border-2 border-cyan-300 flex items-center justify-center bg-slate-800 shadow-lg shadow-cyan-500/20">
+          <span class="text-2xl">❄️</span>
+        </div>
+        <div>
+          <h1 class="font-cinzel text-xl md:text-2xl font-extrabold tracking-wider text-silver-gradient">
+            Tron cottage by the Amber stream <span class="text-xs font-sans tracking-normal font-normal text-cyan-300 border border-cyan-400/40 px-2 py-0.5 rounded-full ml-2">Metallic Winter</span>
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">Self-Hosted Interactive Tarot Reading Engine &bull; <span class="text-cyan-300 font-semibold bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/40">✨ Secondary Clue Spreads Active</span></p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 text-xs font-medium text-slate-300 flex-wrap justify-end">
+        <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-cyan-500/30 text-cyan-200">
+          <span>🎴</span>
+          <span id="header-active-deck-badge" class="font-cinzel font-bold">Rider-Waite-Smith (1909)</span>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Engine Active</span>
+        </div>
+        <button id="btn-new-reading" class="hover:text-cyan-300 transition-colors cursor-pointer border-b border-dashed border-slate-500">
+          🔄 Reset / New Reading
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT SPA CONTAINER -->
+    <main class="w-full">
+      
+      <!-- STEP 1: USER QUERY & TAROT DECK VIBE SELECTION -->
+      <section id="step-1" class="metallic-card p-6 md:p-8 flex flex-col gap-6 max-w-5xl mx-auto">
+        <div class="border-b border-slate-700/60 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-2">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-widest text-cyan-400">Step 1 of 5 &bull; Question &amp; Deck Vibe</span>
+            <h2 class="font-cinzel text-2xl font-bold text-white mt-1">What question do you bring to the cards?</h2>
+            <p class="text-xs text-slate-400 mt-1">Enter your question below and pick the Tarot deck illustration style that matches your reading's vibe.</p>
+          </div>
+          <div class="text-xs text-cyan-300 font-medium bg-slate-900/80 px-3 py-1.5 rounded-lg border border-cyan-500/30 self-start md:self-auto">
+            Active Deck: <strong id="step1-active-deck-label" class="font-cinzel text-white">Rider-Waite-Smith (1909)</strong>
+          </div>
+        </div>
+
+        <!-- Question Input -->
+        <div class="flex flex-col gap-2">
+          <label for="user-query" class="text-xs font-bold uppercase tracking-wider text-cyan-200">1. Your Question or Intention</label>
+          <textarea id="user-query" rows="3" class="metallic-input w-full text-base resize-none" placeholder="e.g., What guidance do the cards offer for my career transition over the coming season?"></textarea>
+          <span id="query-error" class="hidden text-xs text-red-400 font-semibold">⚠️ Please enter a question to proceed.</span>
+        </div>
+
+        <!-- Deck Style / Vibe Picker (Showing The Fool of each deck) -->
+        <div class="flex flex-col gap-3 border-t border-slate-700/60 pt-5">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <label class="text-xs font-bold uppercase tracking-wider text-cyan-200 block">2. Pick Your Tarot Deck Vibe (Full 78-Card Decks)</label>
+            </div>
+          </div>
+
+          <div id="deck-style-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-1">
+            <!-- 1. Rider-Waite-Smith -->
+            <button type="button" class="deck-vibe-card active group text-left p-3.5 rounded-xl border-2 border-cyan-400 bg-slate-800/80 hover:bg-slate-800 transition-all flex flex-col gap-2.5 cursor-pointer relative shadow-lg shadow-cyan-500/10" data-deck-id="rws" data-deck-name="Rider-Waite-Smith (1909)">
+              <div class="deck-vibe-badge absolute top-2.5 right-2.5 z-10 bg-cyan-400 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">
+                ✓ Selected
+              </div>
+              <div class="w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-600 group-hover:border-cyan-300 transition-colors bg-slate-950 shadow-md">
+                <img src="images/cleaned-deck/major_00.jpg" alt="Rider-Waite-Smith - The Fool" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-[10px] uppercase tracking-wider font-semibold text-cyan-300">Classic 1909</span>
+                <h3 class="font-cinzel font-bold text-sm text-white leading-snug">Rider-Waite-Smith</h3>
+                <p class="text-[11px] text-slate-400 line-clamp-2">Pamela Colman Smith's iconic esoteric illustrations.</p>
+              </div>
+            </button>
+
+            <!-- 2. Celestial Gold (reginanka) -->
+            <button type="button" class="deck-vibe-card group text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-cyan-400/70 hover:bg-slate-800/60 transition-all flex flex-col gap-2.5 cursor-pointer relative" data-deck-id="celestial-gold" data-deck-name="Celestial Gold Tarot">
+              <div class="deck-vibe-badge hidden absolute top-2.5 right-2.5 z-10 bg-cyan-400 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">
+                ✓ Selected
+              </div>
+              <div class="w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-600 group-hover:border-cyan-300 transition-colors bg-slate-950 shadow-md">
+                <img src="images/decks/celestial-gold/major_00.jpg" alt="Celestial Gold - The Fool" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-[10px] uppercase tracking-wider font-semibold text-yellow-300">Modern Astral</span>
+                <h3 class="font-cinzel font-bold text-sm text-white leading-snug">Celestial Gold</h3>
+                <p class="text-[11px] text-slate-400 line-clamp-2">Ornate gold celestial filigree arches &amp; starlight fantasy art.</p>
+              </div>
+            </button>
+
+            <!-- 3. Soimoi Tarot -->
+            <button type="button" class="deck-vibe-card group text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-cyan-400/70 hover:bg-slate-800/60 transition-all flex flex-col gap-2.5 cursor-pointer relative" data-deck-id="soimoi" data-deck-name="Soimoi Urban Tarot">
+              <div class="deck-vibe-badge hidden absolute top-2.5 right-2.5 z-10 bg-cyan-400 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">
+                ✓ Selected
+              </div>
+              <div class="w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-600 group-hover:border-cyan-300 transition-colors bg-slate-950 shadow-md">
+                <img src="images/decks/soimoi/major_00.jpg" alt="Soimoi Tarot - The Fool" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-[10px] uppercase tracking-wider font-semibold text-rose-300">Modern Noir</span>
+                <h3 class="font-cinzel font-bold text-sm text-white leading-snug">Soimoi Tarot</h3>
+                <p class="text-[11px] text-slate-400 line-clamp-2">Moody cinematic urban-fantasy &amp; Neo-Tokyo twilight vibe.</p>
+              </div>
+            </button>
+
+            <!-- 4. Storybook Woodland Animal Tarot -->
+            <button type="button" class="deck-vibe-card group text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-cyan-400/70 hover:bg-slate-800/60 transition-all flex flex-col gap-2.5 cursor-pointer relative" data-deck-id="woodland-animal" data-deck-name="Storybook Woodland Animal Tarot">
+              <div class="deck-vibe-badge hidden absolute top-2.5 right-2.5 z-10 bg-cyan-400 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">
+                ✓ Selected
+              </div>
+              <div class="w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-600 group-hover:border-cyan-300 transition-colors bg-slate-950 shadow-md">
+                <img src="images/decks/woodland-animal/major_00.jpg" alt="Woodland Animal Tarot - The Fool" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-[10px] uppercase tracking-wider font-semibold text-emerald-300">Animal Fable</span>
+                <h3 class="font-cinzel font-bold text-sm text-white leading-snug">Woodland Animal Tarot</h3>
+                <p class="text-[11px] text-slate-400 line-clamp-2">Whimsical storybook woodland animals &amp; starry companions.</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <button id="btn-step1-next" class="btn-metallic w-full py-3.5 text-sm">
+          Proceed to Spread Setup →
+        </button>
+      </section>
+
+      <!-- STEP 2: SPREAD CONFIGURATION -->
+      <section id="step-2" class="hidden metallic-card p-8 flex flex-col gap-6 max-w-3xl mx-auto">
+        <div class="border-b border-slate-700/60 pb-4">
+          <span class="text-xs font-semibold uppercase tracking-widest text-cyan-400">Step 2 of 5</span>
+          <h2 class="font-cinzel text-2xl font-bold text-white mt-1">Configure Your Spread</h2>
+          <p class="text-xs text-slate-400 mt-1">Select the number of cards to draw ($N$) and customize contextual position meanings.</p>
+        </div>
+
+        <!-- Presets -->
+        <div class="flex flex-col gap-2">
+          <label class="text-xs font-bold text-slate-300">Quick Spread Presets:</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button class="preset-btn p-3 rounded-lg border border-slate-700 bg-slate-900/50 hover:border-cyan-400 text-left transition-all text-xs" data-size="1" data-labels="Core Guidance">
+              <strong class="block text-white font-cinzel">1 Card</strong>
+              <span class="text-slate-400">Daily Focus</span>
+            </button>
+            <button class="preset-btn p-3 rounded-lg border border-cyan-400 bg-slate-700/50 text-left transition-all text-xs" data-size="3" data-labels="Past,Present,Future">
+              <strong class="block text-white font-cinzel">3 Cards</strong>
+              <span class="text-slate-400">Past / Present / Future</span>
+            </button>
+            <button class="preset-btn p-3 rounded-lg border border-slate-700 bg-slate-900/50 hover:border-cyan-400 text-left transition-all text-xs" data-size="5" data-labels="Present,Challenge,Past,Future,Outcome">
+              <strong class="block text-white font-cinzel">5 Cards</strong>
+              <span class="text-slate-400">Cross Spread</span>
+            </button>
+            <button class="preset-btn p-3 rounded-lg border border-slate-700 bg-slate-900/50 hover:border-cyan-400 text-left transition-all text-xs" data-size="10" data-labels="Present,Challenge,Past,Future,Above,Below,Advice,External,Hopes/Fears,Outcome">
+              <strong class="block text-white font-cinzel">10 Cards</strong>
+              <span class="text-slate-400">Celtic Cross</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Numeric Selector -->
+        <div class="flex flex-col gap-2">
+          <label for="spread-size" class="text-xs font-bold text-slate-300">Custom Spread Size ($N$ Cards):</label>
+          <select id="spread-size" class="metallic-input w-48 text-sm">
+            <option value="1">1 Card</option>
+            <option value="2">2 Cards</option>
+            <option value="3" selected>3 Cards</option>
+            <option value="4">4 Cards</option>
+            <option value="5">5 Cards</option>
+            <option value="6">6 Cards</option>
+            <option value="7">7 Cards</option>
+            <option value="8">8 Cards</option>
+            <option value="9">9 Cards</option>
+            <option value="10">10 Cards</option>
+          </select>
+        </div>
+
+        <!-- Position Meanings Form -->
+        <div class="flex flex-col gap-3 border-t border-slate-700/60 pt-4">
+          <h3 class="text-sm font-bold text-cyan-200">Position Meanings & Questions</h3>
+          <div id="slot-inputs-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <button id="btn-step2-next" class="btn-metallic w-full py-3 text-sm mt-2">
+          Choose Deck & Shuffle →
+        </button>
+      </section>
+
+      <!-- STEP 3: DECK SELECTION & SHUFFLING ENGINE -->
+      <section id="step-3" class="hidden metallic-card p-8 flex flex-col gap-6 max-w-2xl mx-auto">
+        <div class="border-b border-slate-700/60 pb-4">
+          <span class="text-xs font-semibold uppercase tracking-widest text-cyan-400">Step 3 of 5</span>
+          <h2 class="font-cinzel text-2xl font-bold text-white mt-1">Select Deck Partition & Initiate Shuffle</h2>
+          <p class="text-xs text-slate-400 mt-1">Select your deck pool constraints. True random Fisher-Yates shuffle with 50% reversal probability will be applied.</p>
+        </div>
+
+        <!-- Secondary Spread Clue Context Banner (Shown only in Secondary Spread Mode) -->
+        <div id="step3-secondary-banner" class="hidden p-4 rounded-xl border border-cyan-400/60 bg-slate-900/90 shadow-lg flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
+              <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+              Secondary Spread (Clue Mode)
+            </span>
+            <button id="btn-cancel-secondary" type="button" class="text-xs text-slate-400 hover:text-white px-2.5 py-1 rounded border border-slate-700 hover:border-slate-500 transition-colors cursor-pointer">
+              ✕ Cancel & Return to Spread
+            </button>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-22 rounded-lg overflow-hidden border border-cyan-400/60 shadow-md flex-shrink-0 bg-slate-950">
+              <img id="step3-parent-img" src="" alt="Parent Card" class="w-full h-full object-cover">
+            </div>
+            <div class="flex flex-col gap-1 min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h4 id="step3-parent-name" class="font-cinzel font-bold text-white text-sm"></h4>
+                <span id="step3-parent-orientation" class="text-[11px] px-2 py-0.5 rounded-full font-semibold"></span>
+                <span id="step3-parent-slot" class="text-[11px] text-slate-400"></span>
+              </div>
+              <p id="step3-parent-meaning" class="text-xs text-slate-300 italic line-clamp-2"></p>
+            </div>
+          </div>
+          
+          <!-- Clue Spread Size Quick Selector -->
+          <div class="border-t border-slate-800 pt-3 flex flex-col gap-2">
+            <label class="text-xs font-semibold text-slate-300">Clue Spread Size (Cards to Draw):</label>
+            <div class="grid grid-cols-3 gap-2" id="clue-size-options">
+              <button type="button" class="clue-size-btn p-2 rounded-lg border border-cyan-400 bg-slate-700/60 text-center text-xs text-white transition-all cursor-pointer" data-size="1">
+                <strong class="block font-cinzel">1 Card</strong>
+                <span class="text-[10px] text-slate-300">Direct Clue</span>
+              </button>
+              <button type="button" class="clue-size-btn p-2 rounded-lg border border-slate-700 bg-slate-900/60 hover:border-slate-500 text-center text-xs text-white transition-all cursor-pointer" data-size="2">
+                <strong class="block font-cinzel">2 Cards</strong>
+                <span class="text-[10px] text-slate-400">Duality & Cause</span>
+              </button>
+              <button type="button" class="clue-size-btn p-2 rounded-lg border border-slate-700 bg-slate-900/60 hover:border-slate-500 text-center text-xs text-white transition-all cursor-pointer" data-size="3">
+                <strong class="block font-cinzel">3 Cards</strong>
+                <span class="text-[10px] text-slate-400">Deep Exploration</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deck Options -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <label class="p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-cyan-400 flex items-center gap-3 cursor-pointer transition-all">
+            <input type="radio" name="deck_pool" value="major" class="accent-cyan-400">
+            <div>
+              <strong class="block text-white font-cinzel text-sm">Only Major Arcana</strong>
+              <span class="text-xs text-slate-400">22 Archetypal Cards</span>
+            </div>
+          </label>
+
+          <label class="p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-cyan-400 flex items-center gap-3 cursor-pointer transition-all">
+            <input type="radio" name="deck_pool" value="minor" class="accent-cyan-400">
+            <div>
+              <strong class="block text-white font-cinzel text-sm">Only Minor Arcana</strong>
+              <span class="text-xs text-slate-400">56 Elemental Cards</span>
+            </div>
+          </label>
+
+          <label class="p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-cyan-400 flex items-center gap-3 cursor-pointer transition-all">
+            <input type="radio" name="deck_pool" value="royal" class="accent-cyan-400">
+            <div>
+              <strong class="block text-white font-cinzel text-sm">Only Royal / Court Cards</strong>
+              <span class="text-xs text-slate-400">16 Kings, Queens, Knights, Pages</span>
+            </div>
+          </label>
+
+          <label class="p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-cyan-400 flex items-center gap-3 cursor-pointer transition-all">
+            <input type="radio" name="deck_pool" value="full" checked class="accent-cyan-400">
+            <div>
+              <strong class="block text-white font-cinzel text-sm">Full Deck</strong>
+              <span id="step3-full-deck-subtitle" class="text-xs text-slate-400">All 78 Rider-Waite-Smith (1909) Cards</span>
+            </div>
+          </label>
+        </div>
+
+        <button id="btn-shuffle" class="btn-metallic w-full py-4 text-base tracking-wider mt-2">
+          ⚡ Initiate Metallic Shuffle
+        </button>
+
+        <!-- 2.0s Shuffle Animation Container -->
+        <div id="shuffle-animation-container" class="hidden flex flex-col items-center justify-center gap-4 py-8">
+          <div class="relative w-48 h-64 flex items-center justify-center" id="shuffle-deck-stack">
+            <!-- Animated Stack Cards appended via JS -->
+          </div>
+          <p class="text-xs font-cinzel text-cyan-300 animate-pulse font-bold tracking-wider">
+            🔮 Shuffling & Balancing Orientation (2.0s)...
+          </p>
+        </div>
+      </section>
+
+      <!-- STEP 4: CARD SELECTION INTERACTION -->
+      <section id="step-4" class="hidden metallic-card p-8 flex flex-col items-center gap-6 max-w-2xl mx-auto text-center">
+        <div class="border-b border-slate-700/60 pb-4 w-full">
+          <span class="text-xs font-semibold uppercase tracking-widest text-cyan-400">Step 4 of 5</span>
+          <h2 class="font-cinzel text-2xl font-bold text-white mt-1">Assign Cards to Spread Positions</h2>
+          <p class="text-xs text-slate-400 mt-1">Click the face-down cards sequentially from the pile to assign them to your spread layout.</p>
+        </div>
+
+        <div id="assign-progress" class="text-sm bg-slate-900/80 px-4 py-2 rounded-lg border border-slate-700 w-full">
+          <!-- Dynamic progress text -->
+        </div>
+
+        <div class="relative w-48 h-72 flex items-center justify-center my-4" id="face-down-stack">
+          <!-- Face-down clickable card stack rendered by JS -->
+        </div>
+      </section>
+
+      <!-- STEP 5: LAYOUT & FLIP-TO-REVEAL MECHANISM -->
+      <section id="step-5" class="hidden flex flex-col gap-6 w-full">
+        <!-- Spread Navigation Bar (Primary vs Secondary Spreads) -->
+        <div id="spread-nav-bar" class="hidden metallic-card p-3 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2 flex-wrap" id="spread-nav-tabs">
+            <!-- Dynamically populated tabs: [🎴 Primary Spread] [❄️ Clue: The Fool] -->
+          </div>
+          <button id="btn-back-to-primary" type="button" class="hidden text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-600 hover:border-cyan-400 text-slate-300 hover:text-white transition-all cursor-pointer">
+            ← Return to Primary Spread
+          </button>
+        </div>
+
+        <div class="metallic-card p-5 flex flex-col gap-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <span id="step5-badge" class="text-xs font-semibold uppercase tracking-widest text-cyan-400">Step 5 of 5 — Interactive Layout</span>
+              <h2 id="step5-heading" class="font-cinzel text-xl md:text-2xl font-bold text-white">Flip Cards to Reveal Meanings</h2>
+              <p id="step5-subheading" class="text-xs text-slate-400 mt-0.5">Click each card to flip and inspect. Click "Get More Clue" to draw a secondary spread.</p>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <button id="btn-reveal-all" type="button" class="text-xs px-3.5 py-1.5 rounded-lg border border-cyan-400/60 bg-cyan-950/70 hover:bg-cyan-900/90 text-cyan-200 hover:text-white font-semibold transition-all flex items-center gap-1.5 shadow shadow-cyan-950/50 cursor-pointer">
+                <span>👁️</span>
+                <span>Reveal All Cards</span>
+              </button>
+              <button id="btn-copy-llm-top" type="button" class="hidden text-xs px-3.5 py-1.5 rounded-lg border border-emerald-400/60 bg-emerald-950/70 hover:bg-emerald-900/90 text-emerald-200 hover:text-white font-semibold transition-all flex items-center gap-1.5 shadow shadow-emerald-950/50 cursor-pointer">
+                <span>📋</span>
+                <span id="btn-copy-llm-top-text">Copy Text for LLM</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Question Display Banner -->
+          <div id="step5-question-box" class="bg-slate-900/80 p-3.5 rounded-xl border border-cyan-400/40 shadow-inner flex flex-col gap-2">
+            <span id="step5-question-label" class="text-xs font-semibold uppercase tracking-wider text-cyan-300">Your Question (Step 1):</span>
+            <p id="step5-user-question" class="text-base md:text-lg font-cinzel font-bold text-white italic">
+              <!-- Dynamically populated via JS -->
+            </p>
+            <!-- Secondary Spread Parent Card Details -->
+            <div id="step5-secondary-parent-info" class="hidden pt-3 border-t border-slate-800 flex items-center gap-3">
+              <img id="step5-parent-thumb" src="" alt="" class="w-12 h-20 object-cover rounded-lg border border-cyan-400/60 shadow-md">
+              <div class="text-xs flex flex-col gap-1">
+                <div>
+                  <span class="text-slate-400">Clue for:</span> <strong id="step5-parent-name-text" class="text-white font-cinzel"></strong>
+                  <span id="step5-parent-orientation-badge" class="ml-1 text-[10px] px-1.5 py-0.5 rounded font-bold"></span>
+                </div>
+                <p id="step5-parent-meaning-text" class="text-slate-300 italic text-[11px] line-clamp-2"></p>
+                <p id="step5-original-query-text" class="text-slate-500 text-[11px]"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Responsive Card Spread Grid -->
+        <div id="spread-grid">
+          <!-- Dynamically populated card slots -->
+        </div>
+
+        <!-- Auto-Generated LLM Interpretation Text Section -->
+        <div id="llm-prompt-section" class="metallic-card p-6 flex flex-col gap-4 border border-cyan-400/40">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-700/60 pb-3">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-widest text-cyan-400 flex items-center gap-1.5">
+                <span>🤖</span>
+                <span>Auto-Generated Reading Description for LLM</span>
+              </span>
+              <h3 class="font-cinzel text-lg font-bold text-white mt-0.5">Copy &amp; Paste into Any LLM for Deep Interpretation</h3>
+              <p id="llm-prompt-status" class="text-xs text-slate-400 mt-0.5">Flip your cards above to automatically build the complete reading description.</p>
+            </div>
+            <div class="flex items-center gap-2 self-start sm:self-auto">
+              <button id="btn-copy-llm-prompt" type="button" class="btn-metallic py-2.5 px-4 text-xs flex items-center gap-2 cursor-pointer">
+                <span>📋</span>
+                <span id="btn-copy-llm-text">Copy for LLM Interpretation</span>
+              </button>
+            </div>
+          </div>
+
+          <textarea id="llm-prompt-textarea" rows="12" readonly class="metallic-input w-full font-mono text-xs leading-relaxed text-slate-200 bg-slate-950/90 border border-slate-700/80 resize-y select-all" placeholder="Reveal at least one card to generate your structured tarot reading description..."></textarea>
+        </div>
+      </section>
+
+  </div>
+
+  <!-- Card Inspector Modal (Direct child of body for reliable fixed positioning) -->
+  <div id="card-detail-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 modal-backdrop">
+    <div class="metallic-card max-w-2xl w-full p-6 flex flex-col gap-5 border border-cyan-400/50 shadow-2xl relative">
+      <button id="modal-close-btn" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold p-1 leading-none cursor-pointer">
+        ✕
+      </button>
+
+      <div class="flex flex-col sm:flex-row gap-6 items-center">
+        <div class="w-56 sm:w-64 aspect-[2/3] flex-shrink-0 rounded-xl overflow-hidden border-2 border-slate-300 shadow-xl metallic-frame bg-slate-950">
+          <img id="modal-card-img" src="" alt="" class="w-full h-full object-fill rounded-lg">
+        </div>
+        <div class="flex flex-col gap-2 flex-1 text-center sm:text-left">
+          <span id="modal-card-slot" class="text-xs uppercase font-semibold tracking-wider text-cyan-300"></span>
+          <h3 id="modal-card-name" class="font-cinzel text-xl font-bold text-white"></h3>
+          <div>
+            <span id="modal-card-orientation" class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full"></span>
+          </div>
+          <div class="meaning-box text-xs mt-1 max-h-36 overflow-y-auto">
+            <p id="modal-card-meaning" class="font-medium text-slate-800"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2 border-t border-slate-700/60 pt-4">
+        <button id="modal-btn-get-clue" type="button" class="btn-metallic w-full py-3 text-sm flex items-center justify-center gap-2 cursor-pointer font-bold shadow-lg">
+          <span>🔍</span>
+          <span>Get More Clue on this Card →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/tarot_dataset.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
