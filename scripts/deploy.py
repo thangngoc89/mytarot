@@ -30,9 +30,9 @@ def deploy():
         print("❌ Build step failed. Aborting deployment.", file=sys.stderr)
         sys.exit(res.returncode)
 
-    # Step 2: Stage docs/ and related deployment files
-    print("\n📦 Staging docs/ and deploy scripts in git...")
-    files_to_stage = ["docs", ".gitignore", ".nojekyll", "scripts/build.py", "scripts/deploy.py", "deploy.py", "AGENTS.md"]
+    # Step 2: Stage source, docs/ and related deployment files
+    print("\n📦 Staging static/, docs/ and deploy scripts in git...")
+    files_to_stage = ["static", "docs", ".gitignore", ".nojekyll", "scripts/build.py", "scripts/deploy.py", "deploy.py", "AGENTS.md"]
     existing_files = [f for f in files_to_stage if os.path.exists(os.path.join(BASE_DIR, f))]
     run_cmd(["git", "add"] + existing_files)
 
