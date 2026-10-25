@@ -40,17 +40,19 @@ python deploy.py
 python scripts/deploy.py
 ```
 This script will:
-1. Copy all assets from `static/` to `docs/`.
-2. Ensure `docs/.nojekyll` is present.
-3. Stage `docs/` and deployment scripts in git.
-4. Create a timestamped commit if there are changes.
-5. Push to the active remote branch (`origin/master`).
+1. Injects the current date and git commit hash into the footer version badge (`<span id="app-version">`).
+2. Copy all assets from `static/` to `docs/`.
+3. Ensure `docs/.nojekyll` is present.
+4. Stage `static/`, `docs/`, and deployment scripts in git.
+5. Create a timestamped commit if there are changes.
+6. Push to the active remote branch (`origin/master`).
 
 ### Rule 3: Build Only (without Git Commit / Push)
 To inspect or verify the build output in `docs/` locally without committing:
 ```bash
 python scripts/build.py
 ```
+This automatically updates the version badge with `vYYYY.MM.DD (commit_hash)`.
 
 ---
 
