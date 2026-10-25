@@ -1,0 +1,22 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+scripts/__pycache__/
+
+# Logs
+*.log
+mytarot.log
+
+# Scratch / test files
+test_color_fool.jpg
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
