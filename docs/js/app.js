@@ -1018,4 +1018,470 @@ document.addEventListener('DOMContentLoaded', () => {
   btnNewReading.addEventListener('click', () => {
     location.reload();
   });
+
+  // ==========================================
+  // 4-DECK CARD COMPARISON VIEWER
+  // (Independent from reading & card drawing)
+  // ==========================================
+  function setupDeckCompareFeature() {
+    const btnOpenDeckCompare = document.getElementById('btn-open-deck-compare');
+    const btnHeaderDeckCompare = document.getElementById('btn-header-deck-compare');
+    const deckCompareModal = document.getElementById('deck-compare-modal');
+    const compareModalCloseBtn = document.getElementById('compare-modal-close-btn');
+
+    const compareSearchInput = document.getElementById('compare-search-input');
+    const compareSearchClear = document.getElementById('compare-search-clear');
+    const compareSearchSuggestions = document.getElementById('compare-search-suggestions');
+    const compareCardSelect = document.getElementById('compare-card-select');
+
+    const comparePrevBtn = document.getElementById('compare-prev-btn');
+    const compareNextBtn = document.getElementById('compare-next-btn');
+    const compareRandomBtn = document.getElementById('compare-random-btn');
+
+    const compareOrientationToggle = document.getElementById('compare-orientation-toggle');
+    const compareOrientationLabel = document.getElementById('compare-orientation-label');
+    const compareCardTitle = document.getElementById('compare-card-title');
+    const compareCardTypeBadge = document.getElementById('compare-card-type-badge');
+    const compareUprightMeaning = document.getElementById('compare-upright-meaning');
+    const compareReversedMeaning = document.getElementById('compare-reversed-meaning');
+    const compareUprightBox = document.getElementById('compare-upright-box');
+    const compareReversedBox = document.getElementById('compare-reversed-box');
+
+    const compareImgRws = document.getElementById('compare-img-rws');
+    const compareImgCelestial = document.getElementById('compare-img-celestial-gold');
+    const compareImgSoimoi = document.getElementById('compare-img-soimoi');
+    const compareImgWoodland = document.getElementById('compare-img-woodland-animal');
+
+    // Lightbox modal elements
+    const compareLightboxModal = document.getElementById('compare-lightbox-modal');
+    const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+    const lightboxDeckBadge = document.getElementById('lightbox-deck-badge');
+    const lightboxCardName = document.getElementById('lightbox-card-name');
+    const lightboxDeckName = document.getElementById('lightbox-deck-name');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    if (!deckCompareModal) return;
+
+    let compareActiveIndex = 0;
+    let compareIsReversed = false;
+    let highlightedSuggestionIndex = -1;
+
+    // Capitalize helper
+    function capitalize(str) {
+      if (!str) return '';
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Populate Grouped Card Select Dropdown
+    function populateCardSelect() {
+      if (!compareCardSelect || !tarotDataset.length) return;
+      compareCardSelect.innerHTML = '';
+
+      const groups = [
+        { label: 'Major Arcana', cards: tarotDataset.filter(c => c.type === 'major') },
+        { label: 'Suit of Cups', cards: tarotDataset.filter(c => c.suit === 'cups') },
+        { label: 'Suit of Pentacles', cards: tarotDataset.filter(c => c.suit === 'pentacles') },
+        { label: 'Suit of Swords', cards: tarotDataset.filter(c => c.suit === 'swords') },
+        { label: 'Suit of Wands', cards: tarotDataset.filter(c => c.suit === 'wands') }
+      ];
+
+      groups.forEach(grp => {
+        if (!grp.cards.length) return;
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = `${grp.label} (${grp.cards.length})`;
+        grp.cards.forEach(card => {
+          const opt = document.createElement('option');
+          opt.value = card.id;
+          opt.textContent = card.name;
+          optgroup.appendChild(opt);
+        });
+        compareCardSelect.appendChild(optgroup);
+      });
+    }
+
+    // Render comparison view for card at index
+    function renderCompareCard(index, updateSearchText = true) {
+      if (!tarotDataset || !tarotDataset.length) return;
+
+      // Wrap around bounds
+      compareActiveIndex = ((index % tarotDataset.length) + tarotDataset.length) % tarotDataset.length;
+      const card = tarotDataset[compareActiveIndex];
+      if (!card) return;
+
+      const filename = card.image_path.split('/').pop();
+
+      // Card titles & badges
+      if (compareCardTitle) compareCardTitle.textContent = card.name;
+      if (compareCardTypeBadge) {
+        if (card.type === 'major') {
+          compareCardTypeBadge.textContent = `Major Arcana • Rank ${card.rank}`;
+          compareCardTypeBadge.className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40';
+        } else {
+          compareCardTypeBadge.textContent = `Suit of ${capitalize(card.suit)} • ${capitalize(card.rank)}`;
+          compareCardTypeBadge.className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/40';
+        }
+      }
+
+      // Meanings
+      if (compareUprightMeaning) compareUprightMeaning.textContent = card.meaning_upright;
+      if (compareReversedMeaning) compareReversedMeaning.textContent = card.meaning_reversed;
+
+      // Highlight active orientation meaning box
+      if (compareUprightBox && compareReversedBox) {
+        if (compareIsReversed) {
+          compareUprightBox.classList.remove('ring-2', 'ring-emerald-400');
+          compareReversedBox.classList.add('ring-2', 'ring-amber-400');
+        } else {
+          compareReversedBox.classList.remove('ring-2', 'ring-amber-400');
+          compareUprightBox.classList.add('ring-2', 'ring-emerald-400');
+        }
+      }
+
+      // 4 Deck Card Images
+      const rotStyle = compareIsReversed ? 'rotate(180deg)' : 'none';
+      if (compareImgRws) {
+        compareImgRws.src = `images/cleaned-deck/${filename}`;
+        compareImgRws.style.transform = rotStyle;
+      }
+      if (compareImgCelestial) {
+        compareImgCelestial.src = `images/decks/celestial-gold/${filename}`;
+        compareImgCelestial.style.transform = rotStyle;
+      }
+      if (compareImgSoimoi) {
+        compareImgSoimoi.src = `images/decks/soimoi/${filename}`;
+        compareImgSoimoi.style.transform = rotStyle;
+      }
+      if (compareImgWoodland) {
+        compareImgWoodland.src = `images/decks/woodland-animal/${filename}`;
+        compareImgWoodland.style.transform = rotStyle;
+      }
+
+      // Sync Dropdown Select
+      if (compareCardSelect) {
+        compareCardSelect.value = card.id;
+      }
+
+      // Sync Search Input Text
+      if (updateSearchText && compareSearchInput && document.activeElement !== compareSearchInput) {
+        compareSearchInput.value = card.name;
+        if (compareSearchClear) compareSearchClear.classList.remove('hidden');
+      }
+
+      hideSuggestions();
+    }
+
+    // Number aliases mapping for flexible card search (e.g., "3 cups" -> "Three of Cups")
+    const NUM_ALIASES = {
+      '1': ['ace', 'one', '1st'],
+      '2': ['two', '2nd'],
+      '3': ['three', '3rd'],
+      '4': ['four', '4th'],
+      '5': ['five', '5th'],
+      '6': ['six', '6th'],
+      '7': ['seven', '7th'],
+      '8': ['eight', '8th'],
+      '9': ['nine', '9th'],
+      '10': ['ten', '10th']
+    };
+
+    function searchCards(query) {
+      if (!query || !query.trim()) return [];
+      const clean = query.toLowerCase().trim();
+
+      return tarotDataset.filter(card => {
+        const name = card.name.toLowerCase();
+        const suit = (card.suit || '').toLowerCase();
+        const rank = (card.rank || '').toLowerCase();
+
+        if (name.includes(clean)) return true;
+        if (suit.includes(clean)) return true;
+        if (rank.includes(clean)) return true;
+
+        // Check numeric substitutions
+        for (const [digit, aliases] of Object.entries(NUM_ALIASES)) {
+          if (clean.includes(digit)) {
+            for (const alias of aliases) {
+              const testQuery = clean.replace(digit, alias);
+              if (name.includes(testQuery)) return true;
+            }
+          }
+        }
+        return false;
+      });
+    }
+
+    function showSuggestions(matches) {
+      if (!compareSearchSuggestions) return;
+      if (!matches || !matches.length) {
+        compareSearchSuggestions.innerHTML = `
+          <div class="p-3 text-xs text-slate-400 text-center">
+            No matching tarot cards found. Try searching e.g. "Fool", "3 of Cups", "Death", "Queen".
+          </div>
+        `;
+        compareSearchSuggestions.classList.remove('hidden');
+        highlightedSuggestionIndex = -1;
+        return;
+      }
+
+      highlightedSuggestionIndex = -1;
+      const html = matches.slice(0, 12).map((c, i) => {
+        const filename = c.image_path.split('/').pop();
+        const tag = c.type === 'major' ? `Major Arcana ${c.rank}` : `Suit of ${capitalize(c.suit)}`;
+        return `
+          <div class="suggestion-item p-2.5 hover:bg-slate-800/90 cursor-pointer flex items-center justify-between gap-3 transition-colors ${i === 0 ? 'bg-slate-800/40' : ''}" data-card-id="${c.id}" data-index="${i}">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-10 rounded overflow-hidden bg-slate-950 border border-slate-700 flex-shrink-0">
+                <img src="images/cleaned-deck/${filename}" alt="${c.name}" class="w-full h-full object-cover">
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-white leading-tight">${c.name}</span>
+                <span class="text-[10px] text-cyan-300 font-medium">${tag}</span>
+              </div>
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono">View 4 Vibes →</span>
+          </div>
+        `;
+      }).join('');
+
+      compareSearchSuggestions.innerHTML = html;
+      compareSearchSuggestions.classList.remove('hidden');
+
+      // Click on suggestion
+      compareSearchSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const cardId = item.dataset.cardId;
+          const idx = tarotDataset.findIndex(c => c.id === cardId);
+          if (idx !== -1) {
+            renderCompareCard(idx, true);
+          }
+        });
+      });
+    }
+
+    function hideSuggestions() {
+      if (compareSearchSuggestions) {
+        compareSearchSuggestions.classList.add('hidden');
+        highlightedSuggestionIndex = -1;
+      }
+    }
+
+    // Search Input Events
+    if (compareSearchInput) {
+      compareSearchInput.addEventListener('input', () => {
+        const q = compareSearchInput.value.trim();
+        if (compareSearchClear) {
+          if (q.length > 0) compareSearchClear.classList.remove('hidden');
+          else compareSearchClear.classList.add('hidden');
+        }
+
+        if (!q) {
+          hideSuggestions();
+          return;
+        }
+
+        const matches = searchCards(q);
+        showSuggestions(matches);
+      });
+
+      compareSearchInput.addEventListener('keydown', (e) => {
+        const items = compareSearchSuggestions ? compareSearchSuggestions.querySelectorAll('.suggestion-item') : [];
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (!items.length) return;
+          highlightedSuggestionIndex = (highlightedSuggestionIndex + 1) % items.length;
+          items.forEach((it, i) => it.classList.toggle('bg-slate-700/80', i === highlightedSuggestionIndex));
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (!items.length) return;
+          highlightedSuggestionIndex = (highlightedSuggestionIndex - 1 + items.length) % items.length;
+          items.forEach((it, i) => it.classList.toggle('bg-slate-700/80', i === highlightedSuggestionIndex));
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (items.length > 0) {
+            const targetItem = highlightedSuggestionIndex >= 0 ? items[highlightedSuggestionIndex] : items[0];
+            const cardId = targetItem.dataset.cardId;
+            const idx = tarotDataset.findIndex(c => c.id === cardId);
+            if (idx !== -1) {
+              renderCompareCard(idx, true);
+            }
+          }
+          compareSearchInput.blur();
+          hideSuggestions();
+        } else if (e.key === 'Escape') {
+          hideSuggestions();
+        }
+      });
+    }
+
+    // Clear Search Input Button
+    if (compareSearchClear) {
+      compareSearchClear.addEventListener('click', () => {
+        if (compareSearchInput) {
+          compareSearchInput.value = '';
+          compareSearchInput.focus();
+        }
+        compareSearchClear.classList.add('hidden');
+        hideSuggestions();
+      });
+    }
+
+    // Select Dropdown Change
+    if (compareCardSelect) {
+      compareCardSelect.addEventListener('change', () => {
+        const cardId = compareCardSelect.value;
+        const idx = tarotDataset.findIndex(c => c.id === cardId);
+        if (idx !== -1) {
+          renderCompareCard(idx, true);
+        }
+      });
+    }
+
+    // Navigation Buttons (Prev, Next, Random)
+    if (comparePrevBtn) {
+      comparePrevBtn.addEventListener('click', () => {
+        renderCompareCard(compareActiveIndex - 1, true);
+      });
+    }
+
+    if (compareNextBtn) {
+      compareNextBtn.addEventListener('click', () => {
+        renderCompareCard(compareActiveIndex + 1, true);
+      });
+    }
+
+    if (compareRandomBtn) {
+      compareRandomBtn.addEventListener('click', () => {
+        const rand = Math.floor(Math.random() * tarotDataset.length);
+        renderCompareCard(rand, true);
+      });
+    }
+
+    // Orientation Toggle (Upright / Reversed)
+    if (compareOrientationToggle) {
+      compareOrientationToggle.addEventListener('click', () => {
+        compareIsReversed = !compareIsReversed;
+        if (compareOrientationLabel) {
+          compareOrientationLabel.textContent = compareIsReversed
+            ? 'Orientation: Reversed (180°)'
+            : 'Orientation: Upright (0°)';
+        }
+        renderCompareCard(compareActiveIndex, false);
+      });
+    }
+
+    // Lightbox modal for enlarged artwork view
+    function openLightbox(deckName, deckBadge, badgeClass, imgSrc) {
+      if (!compareLightboxModal) return;
+      const card = tarotDataset[compareActiveIndex];
+      if (lightboxDeckBadge) {
+        lightboxDeckBadge.textContent = deckBadge;
+        lightboxDeckBadge.className = `text-[10px] font-extrabold px-2 py-0.5 rounded-full self-start ${badgeClass}`;
+      }
+      if (lightboxCardName) lightboxCardName.textContent = card ? card.name : '';
+      if (lightboxDeckName) lightboxDeckName.textContent = deckName;
+      if (lightboxImg) {
+        lightboxImg.src = imgSrc;
+        lightboxImg.style.transform = compareIsReversed ? 'rotate(180deg)' : 'none';
+      }
+      compareLightboxModal.classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      if (compareLightboxModal) compareLightboxModal.classList.add('hidden');
+    }
+
+    if (lightboxCloseBtn) {
+      lightboxCloseBtn.addEventListener('click', closeLightbox);
+    }
+    if (compareLightboxModal) {
+      compareLightboxModal.addEventListener('click', (e) => {
+        if (e.target === compareLightboxModal) closeLightbox();
+      });
+    }
+
+    // Clicking on any deck card opens the lightbox
+    document.querySelectorAll('.compare-card-frame').forEach(frame => {
+      frame.addEventListener('click', () => {
+        const deckName = frame.dataset.deckName || 'Tarot Deck';
+        const deckBadge = frame.dataset.deckBadge || 'Tarot Vibe';
+        const badgeClass = frame.dataset.badgeClass || 'bg-cyan-950 text-cyan-300 border border-cyan-500/40';
+        const img = frame.querySelector('img');
+        if (img) openLightbox(deckName, deckBadge, badgeClass, img.src);
+      });
+    });
+
+    // Modal Open & Close Functions
+    function openDeckCompare() {
+      populateCardSelect();
+      renderCompareCard(compareActiveIndex, true);
+      deckCompareModal.classList.remove('hidden');
+    }
+
+    function closeDeckCompare() {
+      deckCompareModal.classList.add('hidden');
+      hideSuggestions();
+      closeLightbox();
+    }
+
+    if (btnOpenDeckCompare) {
+      btnOpenDeckCompare.addEventListener('click', openDeckCompare);
+    }
+    if (btnHeaderDeckCompare) {
+      btnHeaderDeckCompare.addEventListener('click', openDeckCompare);
+    }
+    if (compareModalCloseBtn) {
+      compareModalCloseBtn.addEventListener('click', closeDeckCompare);
+    }
+
+    // Close on backdrop click
+    deckCompareModal.addEventListener('click', (e) => {
+      if (e.target === deckCompareModal) {
+        closeDeckCompare();
+      }
+    });
+
+    // Close suggestions on outside click
+    document.addEventListener('click', (e) => {
+      if (compareSearchSuggestions && !compareSearchSuggestions.contains(e.target) && e.target !== compareSearchInput) {
+        hideSuggestions();
+      }
+    });
+
+    // Keyboard Shortcuts (Esc to close, Left/Right arrows for Prev/Next)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (compareLightboxModal && !compareLightboxModal.classList.contains('hidden')) {
+          closeLightbox();
+          e.stopPropagation();
+          return;
+        }
+        if (deckCompareModal && !deckCompareModal.classList.contains('hidden')) {
+          closeDeckCompare();
+          e.stopPropagation();
+          return;
+        }
+      }
+
+      // Arrow navigation when compare modal is open and input not focused
+      if (deckCompareModal && !deckCompareModal.classList.contains('hidden')) {
+        const isInputFocused = document.activeElement === compareSearchInput;
+        if (!isInputFocused) {
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            renderCompareCard(compareActiveIndex - 1, true);
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            renderCompareCard(compareActiveIndex + 1, true);
+          }
+        }
+      }
+    });
+
+    // Initial population
+    populateCardSelect();
+  }
+
+  // Initialize deck comparison feature
+  setupDeckCompareFeature();
 });

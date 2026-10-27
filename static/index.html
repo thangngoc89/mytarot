@@ -33,6 +33,10 @@
           <span>🎴</span>
           <span id="header-active-deck-badge" class="font-cinzel font-bold">Rider-Waite-Smith (1909)</span>
         </div>
+        <button id="btn-header-deck-compare" type="button" class="flex items-center gap-1.5 bg-slate-900/60 hover:bg-cyan-950/60 px-3 py-1.5 rounded-lg border border-cyan-500/30 text-cyan-300 hover:text-white transition-colors cursor-pointer" title="Compare any card across 4 deck styles">
+          <span>🗂️</span>
+          <span>Compare Decks</span>
+        </button>
         <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span>Engine Active</span>
@@ -72,6 +76,13 @@
             <div>
               <label class="text-xs font-bold uppercase tracking-wider text-cyan-200 block">2. Pick Your Tarot Deck Vibe (Full 78-Card Decks)</label>
             </div>
+            <button id="btn-open-deck-compare" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-400/50 bg-slate-900/80 hover:bg-cyan-950/70 hover:border-cyan-300 text-cyan-300 hover:text-white text-xs font-semibold transition-all shadow-sm cursor-pointer group" title="Search and compare any card across all 4 deck vibes">
+              <svg class="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              <span>Compare Card Across Decks</span>
+              <span class="text-[10px] bg-cyan-950 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-700/50">4 Vibes</span>
+            </button>
           </div>
 
           <div id="deck-style-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-1">
@@ -411,7 +422,7 @@
       </div>
       <div class="flex items-center gap-2 font-mono text-[11px] text-slate-400 bg-slate-900/60 px-2.5 py-1 rounded-md border border-slate-800">
         <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span id="app-version">v2026.10.25 (ea4be26)</span>
+        <span id="app-version">v2026.10.27 (489eb11)</span>
       </div>
     </footer>
 
@@ -445,6 +456,186 @@
           <span>🔍</span>
           <span>Get More Clue on this Card →</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deck Card Comparison Modal (Compare 1 Card Across All 4 Deck Vibes) -->
+  <div id="deck-compare-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 modal-backdrop">
+    <div class="metallic-card max-w-5xl w-full max-h-[94vh] flex flex-col border border-cyan-400/50 shadow-2xl relative">
+      <!-- Modal Header -->
+      <div class="p-3.5 sm:p-5 border-b border-slate-700/70 flex items-center justify-between gap-3 bg-slate-900/60">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-cyan-950/80 border border-cyan-400/40 flex items-center justify-center text-cyan-300 text-lg shadow-sm">
+            🗂️
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="font-cinzel text-base sm:text-lg font-bold text-white">Tarot Card Design Comparison</h3>
+              <span class="text-[10px] font-sans font-extrabold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">4 Deck Vibes</span>
+            </div>
+            <p class="text-[11px] sm:text-xs text-slate-400 hidden sm:block">Search any card to view artwork side-by-side across Rider-Waite-Smith, Celestial Gold, Soimoi Urban, and Woodland Animal decks.</p>
+          </div>
+        </div>
+        <button id="compare-modal-close-btn" type="button" class="text-slate-400 hover:text-white text-xl font-bold p-1.5 leading-none cursor-pointer rounded-lg hover:bg-slate-800 transition-colors" title="Close (Esc)">
+          ✕
+        </button>
+      </div>
+
+      <!-- Controls Toolbar: Search, Select, Prev/Next -->
+      <div class="px-3.5 sm:px-5 py-3 bg-slate-950/70 border-b border-slate-800 flex flex-col md:flex-row gap-2.5 items-stretch md:items-center">
+        <!-- Search with live suggestions -->
+        <div class="relative flex-1">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">🔍</span>
+            <input id="compare-search-input" type="text" autocomplete="off" placeholder="Search card by name (e.g. The Fool, High Priestess, 3 of Cups, Death)..." class="metallic-input w-full pl-8 pr-8 text-xs py-2 bg-slate-900/90 text-white placeholder-slate-400">
+            <button id="compare-search-clear" type="button" class="hidden absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-white text-xs cursor-pointer" title="Clear search">✕</button>
+          </div>
+          <!-- Autocomplete dropdown suggestions -->
+          <div id="compare-search-suggestions" class="hidden absolute top-full left-0 right-0 mt-1 max-h-60 overflow-y-auto bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 divide-y divide-slate-800"></div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+          <!-- Dropdown Selector Grouped by Arcana/Suit -->
+          <select id="compare-card-select" class="metallic-input text-xs py-2 bg-slate-900/90 text-slate-200 cursor-pointer flex-1 sm:flex-initial sm:min-w-[190px]">
+            <!-- Populated via JS -->
+          </select>
+
+          <!-- Nav Buttons -->
+          <div class="flex items-center gap-1">
+            <button id="compare-prev-btn" type="button" class="px-2.5 py-1.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-semibold cursor-pointer transition-colors" title="Previous Card">
+              ◀
+            </button>
+            <button id="compare-next-btn" type="button" class="px-2.5 py-1.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-semibold cursor-pointer transition-colors" title="Next Card">
+              ▶
+            </button>
+            <button id="compare-random-btn" type="button" class="px-2.5 py-1.5 rounded-lg border border-cyan-500/40 bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-300 text-xs font-semibold cursor-pointer transition-colors" title="Random Card">
+              🎲 Random
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrollable Comparison Content -->
+      <div class="p-3.5 sm:p-5 overflow-y-auto flex-1 flex flex-col gap-4">
+        <!-- Active Card Header & Meanings -->
+        <div class="bg-slate-900/70 rounded-xl p-3 sm:p-4 border border-slate-800 flex flex-col gap-3 shadow-inner">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <h4 id="compare-card-title" class="font-cinzel text-lg sm:text-xl font-bold text-white tracking-wide">The Fool</h4>
+              <span id="compare-card-type-badge" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">Major Arcana &bull; Rank 0</span>
+            </div>
+            <!-- Orientation Toggle -->
+            <button id="compare-orientation-toggle" type="button" class="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-800 hover:border-cyan-400 text-slate-300 transition-colors self-start sm:self-auto cursor-pointer">
+              <span>🔄</span>
+              <span id="compare-orientation-label">Orientation: Upright (0°)</span>
+            </button>
+          </div>
+
+          <!-- Upright / Reversed Meanings -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+            <div id="compare-upright-box" class="p-2.5 rounded-lg bg-emerald-950/20 border border-emerald-500/30 transition-all">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400 block mb-1">Upright Meaning</span>
+              <p id="compare-upright-meaning" class="text-slate-300 leading-relaxed font-medium">Spontaneity, innocence, potential, new beginnings, leap of faith.</p>
+            </div>
+            <div id="compare-reversed-box" class="p-2.5 rounded-lg bg-amber-950/20 border border-amber-500/30 transition-all">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400 block mb-1">Reversed Meaning</span>
+              <p id="compare-reversed-meaning" class="text-slate-300 leading-relaxed font-medium">Recklessness, risk-taking, naivety, foolishness, hesitation.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Decks Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <!-- 1. Rider-Waite-Smith -->
+          <div class="deck-compare-col flex flex-col gap-2 p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 shadow-lg hover:border-cyan-400/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">Classic 1909</span>
+              <span class="text-[10px] text-slate-400">Pamela C. Smith</span>
+            </div>
+            <h5 class="font-cinzel font-bold text-xs text-white leading-tight">Rider-Waite-Smith</h5>
+            <div class="compare-card-frame relative w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-700 bg-slate-950 shadow-inner group cursor-pointer" data-deck-name="Rider-Waite-Smith (1909)" data-deck-badge="Classic 1909" data-badge-class="bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+              <img id="compare-img-rws" src="images/cleaned-deck/major_00.jpg" alt="Rider-Waite-Smith" class="w-full h-full object-fill group-hover:scale-105">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="text-xs bg-slate-900/90 text-cyan-300 px-2.5 py-1 rounded-md border border-cyan-400/50 shadow-lg font-semibold flex items-center gap-1">
+                  <span>🔍</span> Enlarge
+                </span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-snug">Original 1909 line work &amp; esoteric occult symbolism.</p>
+          </div>
+
+          <!-- 2. Celestial Gold -->
+          <div class="deck-compare-col flex flex-col gap-2 p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 shadow-lg hover:border-yellow-400/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-yellow-950 text-yellow-300 border border-yellow-500/40">Modern Astral</span>
+              <span class="text-[10px] text-slate-400">reginanka</span>
+            </div>
+            <h5 class="font-cinzel font-bold text-xs text-white leading-tight">Celestial Gold</h5>
+            <div class="compare-card-frame relative w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-700 bg-slate-950 shadow-inner group cursor-pointer" data-deck-name="Celestial Gold Tarot" data-deck-badge="Modern Astral" data-badge-class="bg-yellow-950 text-yellow-300 border border-yellow-500/40">
+              <img id="compare-img-celestial-gold" src="images/decks/celestial-gold/major_00.jpg" alt="Celestial Gold" class="w-full h-full object-fill group-hover:scale-105">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="text-xs bg-slate-900/90 text-yellow-300 px-2.5 py-1 rounded-md border border-yellow-400/50 shadow-lg font-semibold flex items-center gap-1">
+                  <span>🔍</span> Enlarge
+                </span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-snug">Ornate gold arches, astral bodies &amp; painterly fantasy.</p>
+          </div>
+
+          <!-- 3. Soimoi Urban Tarot -->
+          <div class="deck-compare-col flex flex-col gap-2 p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 shadow-lg hover:border-rose-400/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-500/40">Modern Noir</span>
+              <span class="text-[10px] text-slate-400">Urban Twilight</span>
+            </div>
+            <h5 class="font-cinzel font-bold text-xs text-white leading-tight">Soimoi Tarot</h5>
+            <div class="compare-card-frame relative w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-700 bg-slate-950 shadow-inner group cursor-pointer" data-deck-name="Soimoi Urban Tarot" data-deck-badge="Modern Noir" data-badge-class="bg-rose-950 text-rose-300 border border-rose-500/40">
+              <img id="compare-img-soimoi" src="images/decks/soimoi/major_00.jpg" alt="Soimoi Tarot" class="w-full h-full object-fill group-hover:scale-105">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="text-xs bg-slate-900/90 text-rose-300 px-2.5 py-1 rounded-md border border-rose-400/50 shadow-lg font-semibold flex items-center gap-1">
+                  <span>🔍</span> Enlarge
+                </span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-snug">Cinematic urban fantasy &amp; neon-lit cyberpunk atmosphere.</p>
+          </div>
+
+          <!-- 4. Storybook Woodland Animal Tarot -->
+          <div class="deck-compare-col flex flex-col gap-2 p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 shadow-lg hover:border-emerald-400/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40">Animal Fable</span>
+              <span class="text-[10px] text-slate-400">Storybook</span>
+            </div>
+            <h5 class="font-cinzel font-bold text-xs text-white leading-tight">Woodland Animal</h5>
+            <div class="compare-card-frame relative w-full aspect-[2/3] rounded-lg overflow-hidden border border-slate-700 bg-slate-950 shadow-inner group cursor-pointer" data-deck-name="Storybook Woodland Animal Tarot" data-deck-badge="Animal Fable" data-badge-class="bg-emerald-950 text-emerald-300 border border-emerald-500/40">
+              <img id="compare-img-woodland-animal" src="images/decks/woodland-animal/major_00.jpg" alt="Woodland Animal Tarot" class="w-full h-full object-fill group-hover:scale-105">
+              <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="text-xs bg-slate-900/90 text-emerald-300 px-2.5 py-1 rounded-md border border-emerald-400/50 shadow-lg font-semibold flex items-center gap-1">
+                  <span>🔍</span> Enlarge
+                </span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-snug">Gentle woodland creatures, botanical flora &amp; starry sky.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal for Full Card Artwork Inspection -->
+  <div id="compare-lightbox-modal" class="hidden fixed inset-0 z-[10000] flex items-center justify-center p-4 modal-backdrop">
+    <div class="metallic-card max-w-sm sm:max-w-md w-full p-4 sm:p-5 flex flex-col gap-3.5 border border-cyan-400/50 shadow-2xl relative">
+      <button id="lightbox-close-btn" type="button" class="absolute top-3.5 right-3.5 text-slate-400 hover:text-white text-lg font-bold p-1 leading-none cursor-pointer rounded-lg hover:bg-slate-800 transition-colors">
+        ✕
+      </button>
+      <div class="flex flex-col gap-1 pr-6">
+        <span id="lightbox-deck-badge" class="text-[10px] font-extrabold px-2 py-0.5 rounded-full self-start"></span>
+        <h4 id="lightbox-card-name" class="font-cinzel text-lg font-bold text-white leading-snug"></h4>
+        <span id="lightbox-deck-name" class="text-xs text-slate-400 font-medium"></span>
+      </div>
+      <div class="w-full aspect-[2/3] rounded-xl overflow-hidden border-2 border-slate-600 bg-slate-950 shadow-2xl">
+        <img id="lightbox-img" src="" alt="" class="w-full h-full object-fill">
       </div>
     </div>
   </div>

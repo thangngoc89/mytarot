@@ -318,3 +318,25 @@ body {
   box-shadow: 0 0 12px var(--ice-cyan-glow);
 }
 
+/* Custom Scrollbar for Dropdowns and Modals */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 22, 31, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 200, 255, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 200, 255, 0.45);
+}
+
+/* Card Compare Transitions */
+.compare-card-frame img {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
