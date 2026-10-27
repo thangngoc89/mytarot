@@ -1056,8 +1056,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const compareLightboxModal = document.getElementById('compare-lightbox-modal');
     const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
     const lightboxDeckBadge = document.getElementById('lightbox-deck-badge');
+    const lightboxCardTag = document.getElementById('lightbox-card-tag');
+    const lightboxCardOrientation = document.getElementById('lightbox-card-orientation');
     const lightboxCardName = document.getElementById('lightbox-card-name');
     const lightboxDeckName = document.getElementById('lightbox-deck-name');
+    const lightboxGuidebookRef = document.getElementById('lightbox-guidebook-ref');
+    const lightboxDeckDesc = document.getElementById('lightbox-deck-desc');
+    const lightboxMeaningUpright = document.getElementById('lightbox-meaning-upright');
+    const lightboxMeaningReversed = document.getElementById('lightbox-meaning-reversed');
+    const lightboxDeckSwitcher = document.getElementById('lightbox-deck-switcher');
     const lightboxImg = document.getElementById('lightbox-img');
 
     if (!deckCompareModal) return;
@@ -1065,6 +1072,237 @@ document.addEventListener('DOMContentLoaded', () => {
     let compareActiveIndex = 0;
     let compareIsReversed = false;
     let highlightedSuggestionIndex = -1;
+    let lightboxActiveDeckId = 'rws';
+
+    // Deck Manual and Visual Canon Knowledge Base
+    const DECK_MANUAL_INFO = {
+      'rws': {
+        name: 'Rider-Waite-Smith (1909)',
+        badge: 'Classic 1909',
+        badgeClass: 'bg-cyan-950 text-cyan-300 border border-cyan-500/40',
+        guidebook: 'The Pictorial Key to the Tarot by Arthur Edward Waite (Illustrated by Pamela Colman Smith, William Rider & Son, London, 1910)',
+        philosophy: 'The quintessential cornerstone of modern Western cartomancy. Designed by Golden Dawn occultist A.E. Waite and rendered by Pamela Colman Smith, this was the first published deck to feature complete narrative scenes for all 78 cards, synthesizing Kabbalistic Tree of Life paths, medieval Christian mysticism, and Hermetic astrology.',
+        getImagePath: (fn) => `images/cleaned-deck/${fn}`
+      },
+      'celestial-gold': {
+        name: 'Celestial Gold Tarot',
+        badge: 'Modern Astral',
+        badgeClass: 'bg-yellow-950 text-yellow-300 border border-yellow-500/40',
+        guidebook: 'Celestial Gold Astral Canon (reginanka, CC BY 4.0)',
+        philosophy: 'A modern astral and cosmological fantasy deck framed by ornate golden filigree arches and midnight starfields. It honors the classic Rider-Waite-Smith archetypal geometry while reimagining each figure as an astral deity, constellation guardian, or cosmic vessel traversing starlit celestial planes.',
+        getImagePath: (fn) => `images/decks/celestial-gold/${fn}`
+      },
+      'soimoi': {
+        name: 'Soimoi Urban Tarot',
+        badge: 'Modern Noir',
+        badgeClass: 'bg-rose-950 text-rose-300 border border-rose-500/40',
+        guidebook: 'Soimoi Contemporary Tarot Guide (Mike Koz / koz.tv, 2025, CC BY 4.0)',
+        philosophy: 'A cinematic Neo-Tokyo urban noir and metropolitan psychological tarot. Following the traditional 78-card Rider-Waite structure card for card, it translates ancient spiritual quests into neon-lit rainy crosswalks, late-night transit, high-rise balconies, and the emotional resonance of modern city life.',
+        getImagePath: (fn) => `images/decks/soimoi/${fn}`
+      },
+      'woodland-animal': {
+        name: 'Storybook Woodland Animal Tarot',
+        badge: 'Animal Fable',
+        badgeClass: 'bg-emerald-950 text-emerald-300 border border-emerald-500/40',
+        guidebook: 'Storybook Woodland Animal Fable Canon (Japanese Doubutsu Tarot / maemaekaachan-beep)',
+        philosophy: 'A gentle pastoral fable where forest creatures, seasonal flora, and animal instincts embody the archetypal journey. Rooted in folklore and nature contemplation, each card invites us to learn from the innocent bravery, quiet patience, and instinctive wisdom of woodland companions.',
+        getImagePath: (fn) => `images/decks/woodland-animal/${fn}`
+      }
+    };
+
+    // Major Arcana In-Depth Deck-Specific Interpretations
+    const MAJOR_INTERPRETATIONS = {
+      'major_0': {
+        'rws': "Waite depicts the youthful traveler in floral tunic standing on the edge of a mountain precipice, holding a white rose of pure desire and a wallet of secret memories. The white companion dog leaps with joy and warning, while the bright sun shines on the journey ahead.",
+        'celestial-gold': "Framed beneath an ornate golden celestial arch, the astral traveler steps into radiant starlight nebulae. A luminous companion star guides their feet as they venture beyond the cosmic threshold into infinite divine potential.",
+        'soimoi': "A young urban wanderer stands at the edge of a high-rise rooftop overlooking a rain-swept neon skyline at midnight. Poised on the verge of the unknown, they take a fearless leap of faith into metropolitan destiny.",
+        'woodland-animal': "A curious little red fox pup steps out from the mossy woodland den at sunrise. Surrounded by dew-covered clover and singing songbirds, it sets off into the great enchanted forest with open-hearted wonder."
+      },
+      'major_1': {
+        'rws': "The Magician stands with wand uplifted to heaven and finger pointing to earth ('As above, so below'). Before him on the table rest the four elemental implements: Wand (Fire), Cup (Water), Sword (Air), and Pentacle (Earth), beneath the lemniscate of infinity.",
+        'celestial-gold': "An astral magus channeling golden cosmic rays through an uplifted solar wand, weaving planetary orbits and glowing stardust to manifest divine reality from celestial ether.",
+        'soimoi': "A tech-visionary and urban alchemist at a glowing neon workstation, orchestrating circuits, digital interfaces, and metropolitan energy with focused willpower and creative mastery.",
+        'woodland-animal': "A clever raccoon or fox wizard with a tiny carved hazel wand, surrounded by glowing woodland acorns, river pearls, pine needles, and crystal stream water to weave gentle nature magic."
+      },
+      'major_2': {
+        'rws': "Seated between the mystical pillars Boaz (black) and Jachin (white) of Solomon's Temple, veiled by pomegranates. A crescent moon rests at her feet and the Torah scroll in her lap, guarding the veil of the subconscious.",
+        'celestial-gold': "The celestial oracle sits crowned by golden lunar crescents and celestial spheres, wrapped in sapphire starlight robes while holding the eternal cosmic scroll of occult knowledge.",
+        'soimoi': "A quiet, enigmatic woman in deep shadows inside a midnight library alcove or quiet subway transit, attuned to the unspoken currents and hidden intuition beneath the city's noise.",
+        'woodland-animal': "A serene snowy owl perched quietly on an ancient birch branch under the glowing silver crescent moon, attuned to the deepest nocturnal whispers of the forest."
+      },
+      'major_3': {
+        'rws': "Crowned with twelve twelve-pointed stars, holding a scepter of world dominion, and seated in ripe wheat fields beside a cascading waterfall. The embodiment of universal fecundity, unconditional love, and earthly bounty.",
+        'celestial-gold': "The cosmic queen of fruition surrounded by golden celestial auroras, blossoming astral roses, and overflowing starlight nectar, nurturing galaxies into bloom.",
+        'soimoi': "A self-assured, creative matriarch in a rooftop botanical garden oasis surrounded by steel towers, cultivating warmth, beauty, and abundant life amidst urban concrete.",
+        'woodland-animal': "A loving mother deer or gentle brown bear nestled in a sun-warmed clearing blanketed with wild strawberries, surrounded by affectionate forest offspring."
+      },
+      'major_4': {
+        'rws': "Seated upon a cubic throne carved with Aries ram heads, armored in red tunic and holding the orb and ankh scepter. The principle of worldly authority, structural foundation, and sovereign law.",
+        'celestial-gold': "The sovereign astral ruler seated upon a throne of golden geometric symmetry, upholding the inviolable laws of cosmic order and planetary architecture.",
+        'soimoi': "A seasoned civic leader or master architect reviewing urban blueprints atop a skyscraper boardroom, establishing discipline, strategy, and enduring stability.",
+        'woodland-animal': "A majestic stag with towering branching antlers or a stalwart mountain grizzly, standing guardian over forest borders with calm authority and protective strength."
+      },
+      'major_5': {
+        'rws': "The Hierophant wears the triple papal crown and holds the triple cross, flanked by two sacred keys and blessing two kneeling priests. Guardian of sacred tradition and the bridge between human and divine wisdom.",
+        'celestial-gold': "High celestial pontiff holding the golden cosmic staff beneath starry cathedral arches, initiating seekers into the eternal mysteries of the constellations.",
+        'soimoi': "A wise academic mentor or cultural elder in an archival hall of heritage, preserving hard-won life lessons and ethical guidance for the next generation.",
+        'woodland-animal': "A venerable old badger or tortoise resting beside the ancient Great Oak, sharing ancestral woodland tales and seasonal lore with eager young forest pupils."
+      },
+      'major_6': {
+        'rws': "Archangel Raphael blesses the union of the primal figures in Eden beneath the blazing sun, with the Tree of Life behind the man and the Tree of Knowledge behind the woman. Archetype of profound choice and spiritual harmony.",
+        'celestial-gold': "Two celestial souls meeting beneath entwined golden constellations and glowing nebulae, their hearts aligned under the radiant witness of twin cosmic suns.",
+        'soimoi': "Two figures sharing an umbrella beneath the warm glow of rain-drenched neon lanterns, finding genuine connection and aligned values amidst the rushing city crowds.",
+        'woodland-animal': "A pair of bonded swans or red foxes nestled cheek-to-cheek beside a tranquil woodland lake, surrounded by blooming water lilies and twilight fireflies."
+      },
+      'major_7': {
+        'rws': "A victorious armored prince stands in his chariot beneath a canopy of stars, guided by two opposing sphinxes of black and white. Triumph achieved through self-mastery, focused will, and balancing conflicting forces.",
+        'celestial-gold': "A golden cosmic chariot pulled by celestial steeds traversing comet paths, driven forward by unbroken mental focus and aligned stellar determination.",
+        'soimoi': "A focused motorcyclist or urban driver navigating high-speed highways through torrential neon rain, propelled forward by sheer ambition and unwavering direction.",
+        'woodland-animal': "A courageous wild hare or swift young wolf leaping across swollen streams and tangled roots, steering through forest challenges with sharp instinct."
+      },
+      'major_8': {
+        'rws': "A gentle maiden crowned with the lemniscate of eternity softly closes the jaws of a fierce red lion with floral garlands. Inner spiritual power, patient courage, and compassion triumphing over brute instinct.",
+        'celestial-gold': "An astral maiden glowing with celestial starlight caressing a constellation lion, proving that gentle spiritual harmony holds greater power than cosmic fury.",
+        'soimoi': "A calm, dignified woman pacifying hostility and urban friction through empathy, emotional poise, and resolute inner strength in the bustling city.",
+        'woodland-animal': "A tiny songbird or field mouse fearlessly perched atop the head of a slumbering grizzly bear, embodying the quiet power of gentleness over physical might."
+      },
+      'major_9': {
+        'rws': "The solitary sage in monastic cowl stands upon an icy mountain peak, holding the staff of truth and a lantern glowing with the six-pointed Seal of Solomon. The pursuit of introspection and inner light.",
+        'celestial-gold': "A cosmic pilgrim floating through quiet stellar voids, carrying a miniature golden sun in a filigree lantern to illuminate personal enlightenment.",
+        'soimoi': "A solitary nighttime traveler sitting by the window of an all-night diner with a warm cup of coffee, searching their conscience away from the city's noise.",
+        'woodland-animal': "A quiet hedgehog or land turtle carrying a glowing acorn lamp down a winding forest path, seeking quiet reflection in solitary mossy hollows."
+      },
+      'major_10': {
+        'rws': "The Wheel of Destiny bearing Hebrew letters and alchemy symbols, flanked by the Angel, Eagle, Lion, and Ox holding open books, with Hermanubis and Typhon presiding over eternal cyclic change.",
+        'celestial-gold': "A magnificent golden astrolabe and planetary zodiac wheel revolving across starlit galaxies, governing karmic cycles and destined turning points.",
+        'soimoi': "The rhythmic turning of subway turnstiles, illuminated clock faces, and stock tickers in the city square, reflecting the rapid shifts of urban fortune.",
+        'woodland-animal': "The grand cycle of the four seasons turning across the forest floor: green spring shoots, summer warmth, autumn acorns, and winter rest."
+      },
+      'major_11': {
+        'rws': "Seated between stone pillars holding the upright double-edged sword of discernment in her right hand and the balanced scales in her left. Universal law, fairness, and accountability.",
+        'celestial-gold': "An astral arbitress weighing stellar constellations in perfect golden balance beneath celestial pillars of eternal cosmic truth.",
+        'soimoi': "A dignified figure outside civic courthouse columns under clear streetlamps, demanding honesty, fairness, and moral integrity in modern society.",
+        'woodland-animal': "A wise horned owl perched on a high branch holding balanced twigs, dispensing fair, objective judgment to resolve forest disputes."
+      },
+      'major_12': {
+        'rws': "Suspended by one foot from a T-shaped living wooden cross, his free leg crossed in a figure 4, with a radiant golden halo illuminating his peaceful face. Spiritual surrender, voluntary sacrifice, and transformed perspective.",
+        'celestial-gold': "An astral figure floating weightless upside down within a glowing golden mandala ring, seeing cosmic truth revealed through mindful release of control.",
+        'soimoi': "An urban commuter calmly paused in mid-motion on a subway rail or fire escape landing, choosing stillness while the rushing city whirls past.",
+        'woodland-animal': "A playful bat or young possum hanging upside down from a weeping willow branch, happily viewing the forest from a fresh and peaceful angle."
+      },
+      'major_13': {
+        'rws': "An armored skeleton carrying the black banner of the five-petaled Mystic Rose rides across the fallen, while the sun rises eternally between two distant towers. Profound transformation, letting go, and inevitable rebirth.",
+        'celestial-gold': "The celestial reaper guiding the peaceful collapse of old dying stars into supernova dust, clearing cosmic space for new solar systems to ignite.",
+        'soimoi': "A lone traveler walking through dawn mist as city streetlights click off, closing an old chapter with dignity to make way for a fresh beginning.",
+        'woodland-animal': "Crisp autumn leaves falling gently around old birch logs, as nature naturally sheds the worn-out past to nourish soil for spring blooms."
+      },
+      'major_14': {
+        'rws': "A winged solar angel pours the elixir of life between two golden chalices with one foot on earth and one in water, with a winding path leading to a radiant crown on the horizon. Alchemy, moderation, and sacred balance.",
+        'celestial-gold': "A golden-winged seraph harmonizing streams of liquid solar light and lunar water between celestial vessels, creating harmonious astral equilibrium.",
+        'soimoi': "A skilled barista or chemist in a warm cafe blending elements with measured grace, maintaining emotional calm and centered lifestyle amidst stress.",
+        'woodland-animal': "A graceful blue heron standing poised in stream waters, balancing water and air with tranquil patience and natural flow."
+      },
+      'major_15': {
+        'rws': "The horned satyr sits upon an altar with two naked figures loosely chained by their necks. The chains are large enough to be slipped off at will, representing voluntary entrapment by materialism and fear.",
+        'celestial-gold': "A shadowy astral titan wielding golden tether chains of cosmic illusion, enticing wandering spirits to mistake earthly shadows for true starlight.",
+        'soimoi': "The hypnotic lure of neon billboards, endless smartphone feeds, and commercial excesses that trap city denizens in cycles of craving and anxiety.",
+        'woodland-animal': "A cunning spider or sly serpent weaving glittering webs around tempting berry bushes, warning animals against tempting illusions and traps."
+      },
+      'major_16': {
+        'rws': "A flash of divine lightning strikes the golden crown of a stone fortress on a jagged mountain peak, toppling false security as two figures fall into the abyss. Breakthrough, revelation, and false foundations shattered.",
+        'celestial-gold': "A golden cosmic citadel shattered by a brilliant bolt of stellar lightning, tearing through rigid astral illusions to reveal the unvarnished universe.",
+        'soimoi': "A glass skyscraper facade shattered by a sudden urban storm and blackout, jolting people out of complacency into urgent personal awakening.",
+        'woodland-animal': "A sudden summer thunderstorm where lightning fells a dead, hollow hollowed-out tree, breaking old blockages so sunlight can reach the forest floor."
+      },
+      'major_17': {
+        'rws': "A maiden kneels beside a tranquil pool pouring waters of life onto land and sea under an eight-pointed golden star and seven lesser stars, as an ibis rests in a nearby tree. Pure inspiration, hope, and spiritual renewal.",
+        'celestial-gold': "A radiant starlight goddess pouring liquid stardust into the cosmic sea beneath brilliant star clusters, recharging weary souls with boundless hope.",
+        'soimoi': "A late-night dreamer gazing up from a wet fire escape at a single brilliant star piercing through city smog, finding rekindled faith in the future.",
+        'woodland-animal': "A gentle fawn drinking from a woodland pool reflecting the glittering North Star, surrounded by glowing fireflies in peaceful nighttime meadows."
+      },
+      'major_18': {
+        'rws': "A dog and wolf bay at the full moon shedding drops of dew, while a crayfish crawls from the primeval pool past twin watchtowers. The realm of dreams, deep instinct, illusion, and subconscious shadow work.",
+        'celestial-gold': "The triple moon goddess radiating luminous golden phases over a mist-veiled ocean of starlight, illuminating the mysteries of the cosmic subconscious.",
+        'soimoi': "A rain-drenched neon alleyway where reflections in murky puddles play tricks on the eyes, confronting late-night urban anxieties and illusions.",
+        'woodland-animal': "A lone grey wolf howling from a mist-shrouded forest cliff under the glowing harvest moon, listening to deep ancient survival instincts."
+      },
+      'major_19': {
+        'rws': "A joyful child crowned with flowers and red feather rides a gentle white steed beneath the blazing golden sun and towering sunflowers. Unabashed joy, clarity, vitality, and triumphant success.",
+        'celestial-gold': "A radiant golden solar deity showering the cosmos in golden solar flares and blooming starlight sunflowers, radiating warmth and supreme clarity.",
+        'soimoi': "Crisp morning sunlight streaming down broad city avenues, banishing shadows and energizing pedestrians with optimism, laughter, and renewal.",
+        'woodland-animal': "Playful river otters and chirping yellow songbirds frolicking in sun-warmed meadow springs surrounded by blooming golden buttercups."
+      },
+      'major_20': {
+        'rws': "Archangel Gabriel sounds the great banner horn from heaven; figures rise with joyful outstretched arms from stone sarcophagi, answering their higher spiritual calling. Rebirth, absolution, and clear awakening.",
+        'celestial-gold': "A cosmic herald sounding a golden stellar trumpet across galaxies, calling awakened spirits to rise into their true higher celestial purpose.",
+        'soimoi': "A watershed moment of self-forgiveness and realization beneath morning traffic lights, letting go of past missteps to step boldly into one's true vocation.",
+        'woodland-animal': "A chorus of migrating geese calling down through mountain valleys at dawn, heralding the forest's joyful awakening after deep winter snows."
+      },
+      'major_21': {
+        'rws': "A dancing maiden holding twin wands is encircled by the green laurel wreath of victory, flanked by the four fixed zodiac signs (Man, Eagle, Lion, Bull). Completion, wholeness, cosmic achievement, and cosmic integration.",
+        'celestial-gold': "An astral dancer encircled by the glowing golden celestial Ouroboros across infinite starfields, celebrating the joyful completion of the cosmic voyage.",
+        'soimoi': "Standing at the summit observation deck at sunrise with full 360-degree views of the waking city, having mastered the urban labyrinth.",
+        'woodland-animal': "A jubilant circle of forest animals holding hands around the ancient Mother Tree under a twilight sky, living in joyful harmony with the wild world."
+      }
+    };
+
+    // Generic Minor Arcana Deck Interpretation Resolver
+    function getMinorCardInterpretation(card, deckId) {
+      const suit = card.suit ? card.suit.toLowerCase() : 'wands';
+      const rank = card.rank ? card.rank.toLowerCase() : '1';
+      const isCourt = card.is_royal || ['page', 'knight', 'queen', 'king'].includes(rank);
+
+      if (deckId === 'rws') {
+        const suitTheme = {
+          'wands': 'Wands (Fire & Willpower): Waite highlights primal energy, inspired ambition, growth, and the fiery enterprise of creative endeavor.',
+          'cups': 'Cups (Water & Emotion): Waite illustrates the vessels of love, friendship, spiritual receptivity, and the fluid currents of the heart.',
+          'swords': 'Swords (Air & Intellect): Waite portrays mental clarity, ethical struggles, trials of truth, and the double-edged nature of human thought.',
+          'pentacles': 'Pentacles (Earth & Material Craft): Waite depicts tangible manifestation, commerce, craftsmanship, physical health, and worldly stability.'
+        }[suit] || 'Minor Arcana realm.';
+        return `Waite & Smith canonical depiction of ${card.name}. ${suitTheme} In this classic 1909 illustration, the scenic backdrop and symbolic figures provide clear visual keys to divining life's everyday trials and spiritual triumphs.`;
+      }
+
+      if (deckId === 'celestial-gold') {
+        const suitTheme = {
+          'wands': 'Golden solar torches flaming with stellar plasma and fiery cosmic ambition.',
+          'cups': 'Luminous golden chalices brimming with cosmic starlight nectar and divine compassion.',
+          'swords': 'Blades forged of starlight constellations and crystalline truth, cutting through cosmic illusions.',
+          'pentacles': 'Golden planetary coins inscribed with celestial geometry and sacred earthly abundance.'
+        }[suit] || 'Celestial artifacts.';
+        return `Rendered in rich golden filigree against deep midnight starlight. Here, ${card.name} is envisioned through ${suitTheme} Every golden arch and celestial starfield motif frames the card as a sacred astral conduit.`;
+      }
+
+      if (deckId === 'soimoi') {
+        const suitTheme = {
+          'wands': 'Creative hustle, midnight studio breakthroughs, startup ambitions, and neon passions.',
+          'cups': 'Intimate corner cafes, rainy umbrella conversations, nightlife bonds, and private emotional depth.',
+          'swords': 'Sharp city realities, complex legal or mental dilemmas, high-stress transit, and resilient clarity.',
+          'pentacles': 'Urban architecture, financial careers, artisans at work, and grounding roots in the bustling metropolis.'
+        }[suit] || 'Urban street scenes.';
+        return `A cinematic Neo-Tokyo urban noir interpretation. ${card.name} translates traditional archetypes into ${suitTheme} Rain reflections and neon streetlamps ground this card in contemporary emotional authenticity.`;
+      }
+
+      if (deckId === 'woodland-animal') {
+        const suitTheme = {
+          'wands': 'Birch branches, campfire warmth, energetic forest runs, and animal seasonal migration.',
+          'cups': 'Clear bubbling river springs, shared wild berries, and gentle woodland family bonds.',
+          'swords': 'Keen animal instincts, defensive quills, raptor flight, and navigating bramble thickets.',
+          'pentacles': 'Gathered autumn acorns, cozy burrows, fertile mossy glades, and nature’s generous bounty.'
+        }[suit] || 'Woodland flora and fauna.';
+        return `A charming storybook fable where ${card.name} is embodied by ${suitTheme} Gentle creature companions and rich botanical illustrations bring an innocent, grounded wisdom to this reading.`;
+      }
+
+      return card.meaning_upright;
+    }
+
+    // Master function to resolve card interpretation across decks
+    function getCardDeckInterpretation(card, deckId) {
+      if (!card) return '';
+      if (card.type === 'major' && MAJOR_INTERPRETATIONS[card.id] && MAJOR_INTERPRETATIONS[card.id][deckId]) {
+        return MAJOR_INTERPRETATIONS[card.id][deckId];
+      }
+      return getMinorCardInterpretation(card, deckId);
+    }
 
     // Capitalize helper
     function capitalize(str) {
@@ -1370,20 +1608,73 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Lightbox modal for enlarged artwork view
-    function openLightbox(deckName, deckBadge, badgeClass, imgSrc) {
+    // Lightbox modal for enlarged artwork view & detailed guidebook manual notes
+    function renderLightboxContent() {
       if (!compareLightboxModal) return;
       const card = tarotDataset[compareActiveIndex];
-      if (lightboxDeckBadge) {
-        lightboxDeckBadge.textContent = deckBadge;
-        lightboxDeckBadge.className = `text-[10px] font-extrabold px-2 py-0.5 rounded-full self-start ${badgeClass}`;
-      }
-      if (lightboxCardName) lightboxCardName.textContent = card ? card.name : '';
-      if (lightboxDeckName) lightboxDeckName.textContent = deckName;
+      if (!card) return;
+
+      const deckInfo = DECK_MANUAL_INFO[lightboxActiveDeckId] || DECK_MANUAL_INFO['rws'];
+      const filename = card.image_path.split('/').pop();
+
+      // Update Card Image
       if (lightboxImg) {
-        lightboxImg.src = imgSrc;
+        lightboxImg.src = deckInfo.getImagePath(filename);
         lightboxImg.style.transform = compareIsReversed ? 'rotate(180deg)' : 'none';
+        lightboxImg.alt = `${card.name} - ${deckInfo.name}`;
       }
+
+      // Badges & Titles
+      if (lightboxDeckBadge) {
+        lightboxDeckBadge.textContent = deckInfo.badge;
+        lightboxDeckBadge.className = `text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${deckInfo.badgeClass}`;
+      }
+
+      if (lightboxCardTag) {
+        lightboxCardTag.textContent = card.type === 'major'
+          ? `Major Arcana • Rank ${card.rank}`
+          : `Suit of ${capitalize(card.suit)} • ${capitalize(card.rank)}`;
+      }
+
+      if (lightboxCardOrientation) {
+        lightboxCardOrientation.textContent = compareIsReversed ? 'Orientation: Reversed (180°)' : 'Orientation: Upright (0°)';
+        lightboxCardOrientation.className = compareIsReversed
+          ? 'text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-600/50'
+          : 'text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/50';
+      }
+
+      if (lightboxCardName) lightboxCardName.textContent = card.name;
+      if (lightboxDeckName) lightboxDeckName.textContent = `${deckInfo.name}`;
+
+      // Guidebook Reference & Detailed Deck Interpretation
+      if (lightboxGuidebookRef) {
+        lightboxGuidebookRef.textContent = `📖 Manual: ${deckInfo.guidebook}`;
+      }
+
+      if (lightboxDeckDesc) {
+        lightboxDeckDesc.textContent = getCardDeckInterpretation(card, lightboxActiveDeckId);
+      }
+
+      // Meanings
+      if (lightboxMeaningUpright) lightboxMeaningUpright.textContent = card.meaning_upright;
+      if (lightboxMeaningReversed) lightboxMeaningReversed.textContent = card.meaning_reversed;
+
+      // Update Quick Deck Switcher active tab styling
+      if (lightboxDeckSwitcher) {
+        lightboxDeckSwitcher.querySelectorAll('.lightbox-deck-tab').forEach(tab => {
+          if (tab.dataset.deckId === lightboxActiveDeckId) {
+            tab.className = 'lightbox-deck-tab text-left px-2 py-1.5 rounded-lg border border-cyan-400 bg-cyan-950 text-white font-bold transition-all cursor-pointer shadow-sm text-[11px] truncate';
+          } else {
+            tab.className = 'lightbox-deck-tab text-left px-2 py-1.5 rounded-lg border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 transition-all cursor-pointer text-[11px] truncate';
+          }
+        });
+      }
+    }
+
+    function openLightbox(deckId = 'rws') {
+      if (!compareLightboxModal) return;
+      lightboxActiveDeckId = deckId;
+      renderLightboxContent();
       compareLightboxModal.classList.remove('hidden');
     }
 
@@ -1400,14 +1691,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Clicking on any deck card opens the lightbox
+    // Deck Switcher tab click listeners inside Lightbox
+    if (lightboxDeckSwitcher) {
+      lightboxDeckSwitcher.querySelectorAll('.lightbox-deck-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const deckId = tab.dataset.deckId;
+          if (deckId && DECK_MANUAL_INFO[deckId]) {
+            lightboxActiveDeckId = deckId;
+            renderLightboxContent();
+          }
+        });
+      });
+    }
+
+    // Clicking on any deck card in comparison grid opens the lightbox for that deck
     document.querySelectorAll('.compare-card-frame').forEach(frame => {
       frame.addEventListener('click', () => {
-        const deckName = frame.dataset.deckName || 'Tarot Deck';
-        const deckBadge = frame.dataset.deckBadge || 'Tarot Vibe';
-        const badgeClass = frame.dataset.badgeClass || 'bg-cyan-950 text-cyan-300 border border-cyan-500/40';
-        const img = frame.querySelector('img');
-        if (img) openLightbox(deckName, deckBadge, badgeClass, img.src);
+        const deckId = frame.dataset.deckId || 'rws';
+        openLightbox(deckId);
       });
     });
 
