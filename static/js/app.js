@@ -746,9 +746,9 @@ function initMyTarotApp() {
   // Deck aesthetic descriptions for richer LLM context
   const DECK_DESCRIPTIONS = {
     'rws': 'Rider-Waite-Smith (1909) — Classic esoteric tradition illustrated by Pamela Colman Smith, rich in Golden Dawn, astrological, and archetypal symbolism.',
-    'celestial-gold': 'Celestial Gold Tarot — Modern astral & painterly fantasy deck framed by ornate gold celestial filigree arches, sun/moon motifs, and deep starlight imagery.',
-    'soimoi': 'Soimoi Urban Tarot — Contemporary cinematic Neo-Tokyo & moody urban-fantasy aesthetic blending traditional archetypes with atmospheric modern storytelling.',
-    'woodland-animal': 'Storybook Woodland Animal Tarot — Whimsical storybook fable deck depicting woodland animals, dogs, and nature companions enacting classic Tarot archetypes under starry skies.'
+    'celestial-gold': 'Celestial Gold Tarot — Luminous astral fantasy deck framed by ornate golden filigree arches and midnight starfields, elevating archetypes into cosmic deities and celestial guardians.',
+    'soimoi': 'Soimoi Mystical Tarot — Atmospheric Japanese folklore & ukiyo-e twilight aesthetic, weaving sacred spirits, yokai, shrine traditions, and traditional archetypes.',
+    'woodland-animal': 'Storybook Woodland Animal Tarot — Whimsical Japanese fairytale fable featuring anthropomorphic woodland creatures in ornate robes, wizard cowls, and regal mantles.'
   };
 
   const POOL_LABELS = {
@@ -1102,15 +1102,15 @@ function initMyTarotApp() {
         badge: 'Modern Astral',
         badgeClass: 'bg-yellow-950 text-yellow-300 border border-yellow-500/40',
         guidebook: 'Celestial Gold Astral Canon (reginanka, CC BY 4.0)',
-        philosophy: 'A modern astral and cosmological fantasy deck framed by ornate golden filigree arches and midnight starfields. It honors the classic Rider-Waite-Smith archetypal geometry while reimagining each figure as an astral deity, constellation guardian, or cosmic vessel traversing starlit celestial planes.',
+        philosophy: 'An opulent astral fantasy deck framed by ornate Renaissance-inspired golden filigree arches and midnight starfields. It honors classical Rider-Waite-Smith archetypal geometry while elevating each figure into a celestial sovereign, cosmic vessel, or stellar deity crowned by constellations, radiant halos, and nebula auroras.',
         getImagePath: (fn) => `images/decks/celestial-gold/${fn}`
       },
       'soimoi': {
-        name: 'Soimoi Urban Tarot',
-        badge: 'Modern Noir',
+        name: 'Soimoi Mystical Tarot',
+        badge: 'Japanese Folklore',
         badgeClass: 'bg-rose-950 text-rose-300 border border-rose-500/40',
-        guidebook: 'Soimoi Contemporary Tarot Guide (Mike Koz / koz.tv, 2025, CC BY 4.0)',
-        philosophy: 'A cinematic Neo-Tokyo urban noir and metropolitan psychological tarot. Following the traditional 78-card Rider-Waite structure card for card, it translates ancient spiritual quests into neon-lit rainy crosswalks, late-night transit, high-rise balconies, and the emotional resonance of modern city life.',
+        guidebook: 'Soimoi Folklore Tarot Guide (Mike Koz / koz.tv, CC BY 4.0)',
+        philosophy: 'An atmospheric Japanese folklore and twilight ukiyo-e aesthetic deck. Faithfully following the 78-card Rider-Waite archetypal structure, it translates ancient spiritual quests into tranquil bamboo groves, vermilion torii gates, shrine maidens, onmyoji sorcerers, guardian yokai, and glowing paper lanterns under misty moons.',
         getImagePath: (fn) => `images/decks/soimoi/${fn}`
       },
       'woodland-animal': {
@@ -1118,7 +1118,7 @@ function initMyTarotApp() {
         badge: 'Animal Fable',
         badgeClass: 'bg-emerald-950 text-emerald-300 border border-emerald-500/40',
         guidebook: 'Storybook Woodland Animal Fable Canon (Japanese Doubutsu Tarot / maemaekaachan-beep)',
-        philosophy: 'A gentle pastoral fable where forest creatures, seasonal flora, and animal instincts embody the archetypal journey. Rooted in folklore and nature contemplation, each card invites us to learn from the innocent bravery, quiet patience, and instinctive wisdom of woodland companions.',
+        philosophy: 'A whimsical Japanese fairytale fable where anthropomorphic woodland creatures don ornate robes, wizard cowls, and regal mantles. Following the 78-card Rider-Waite archetypes, it translates ancient human dilemmas into touching forest folklore—teaching bravery, intuition, and heartfelt companionship under starlit canopies.',
         getImagePath: (fn) => `images/decks/woodland-animal/${fn}`
       }
     };
@@ -1126,136 +1126,136 @@ function initMyTarotApp() {
     // Major Arcana In-Depth Deck-Specific Interpretations
     const MAJOR_INTERPRETATIONS = {
       'major_0': {
-        'rws': "Waite depicts the youthful traveler in floral tunic standing on the edge of a mountain precipice, holding a white rose of pure desire and a wallet of secret memories. The white companion dog leaps with joy and warning, while the bright sun shines on the journey ahead.",
-        'celestial-gold': "Framed beneath an ornate golden celestial arch, the astral traveler steps into radiant starlight nebulae. A luminous companion star guides their feet as they venture beyond the cosmic threshold into infinite divine potential.",
-        'soimoi': "A young urban wanderer stands at the edge of a high-rise rooftop overlooking a rain-swept neon skyline at midnight. Poised on the verge of the unknown, they take a fearless leap of faith into metropolitan destiny.",
-        'woodland-animal': "A curious little red fox pup steps out from the mossy woodland den at sunrise. Surrounded by dew-covered clover and singing songbirds, it sets off into the great enchanted forest with open-hearted wonder."
+        'rws': "Waite depicts the youthful traveler in a floral tunic poised at the edge of a sheer cliff under a blazing sun, holding a white rose of pure innocence and a bindle of secret memories. The white companion dog leaps with playful warning as the Fool embarks on life's great adventure.",
+        'celestial-gold': "Framed beneath an ornate golden celestial arch, a handsome young traveler in a gold-embroidered brocade coat stands on a rocky precipice holding a staff with a travel bundle and a fresh white rose. A lively white puppy leaps by his boots as he gazes up into a starry midnight sky illuminated by a radiant golden eight-pointed star.",
+        'soimoi': "A spirited young woman in a vermilion kimono with a travel bindle slung over her shoulder pauses fearlessly atop a high stone ledge overlooking a twilight city and distant torii gate. Her faithful Shiba Inu companion leaps playfully by her side, greeting the unknown journey ahead with open-hearted joy and courage.",
+        'woodland-animal': "An adventurous traveler hare in a patchwork tunic, blue traveling cape, and feather-adorned walking staff pauses at the brink of a sheer forest cliff, carrying a travel knapsack. A joyful white puppy barks with playful warning beneath an enormous glowing moon and fairytale castle spires."
       },
       'major_1': {
         'rws': "The Magician stands with wand uplifted to heaven and finger pointing to earth ('As above, so below'). Before him on the table rest the four elemental implements: Wand (Fire), Cup (Water), Sword (Air), and Pentacle (Earth), beneath the lemniscate of infinity.",
-        'celestial-gold': "An astral magus channeling golden cosmic rays through an uplifted solar wand, weaving planetary orbits and glowing stardust to manifest divine reality from celestial ether.",
-        'soimoi': "A tech-visionary and urban alchemist at a glowing neon workstation, orchestrating circuits, digital interfaces, and metropolitan energy with focused willpower and creative mastery.",
-        'woodland-animal': "A clever raccoon or fox wizard with a tiny carved hazel wand, surrounded by glowing woodland acorns, river pearls, pine needles, and crystal stream water to weave gentle nature magic."
+        'celestial-gold': "A youthful magus in an ornate crimson and gold-embroidered mantle channels cosmic energy through a glowing golden wand raised to the stars while pointing his left hand to earth. Above his head floats an infinity lemniscate halo, and upon a stone altar entwined with rose vines rest the four cosmic implements: a golden chalice, sword, pentacle disc, and ritual athame dagger.",
+        'soimoi': "An onmyoji sorcerer in an indigo patterned kimono summons elemental reality, holding a sacred brush and ritual dagger while an ethereal azure dragon spirit coils through the air around him. Floating before him on a lacquered altar are the four elemental relics: a steaming teabowl, a curved blade, ofuda talismans, and a brass coin.",
+        'woodland-animal': "A clever red fox wizard in starry purple robes stands before a woodland altar table under a giant cosmic moon and swirling nebula. Raising a glowing crystal-tipped wand high, the fox commands the sacred elemental implements gathered before him: an acorn wand, a forest stream cup, a silver blade, and an inscribed wooden talisman."
       },
       'major_2': {
-        'rws': "Seated between the mystical pillars Boaz (black) and Jachin (white) of Solomon's Temple, veiled by pomegranates. A crescent moon rests at her feet and the Torah scroll in her lap, guarding the veil of the subconscious.",
-        'celestial-gold': "The celestial oracle sits crowned by golden lunar crescents and celestial spheres, wrapped in sapphire starlight robes while holding the eternal cosmic scroll of occult knowledge.",
-        'soimoi': "A quiet, enigmatic woman in deep shadows inside a midnight library alcove or quiet subway transit, attuned to the unspoken currents and hidden intuition beneath the city's noise.",
-        'woodland-animal': "A serene snowy owl perched quietly on an ancient birch branch under the glowing silver crescent moon, attuned to the deepest nocturnal whispers of the forest."
+        'rws': "Seated between the mystical pillars Boaz (black) and Jachin (white) before a veil of pomegranates, wearing the horned Isis crown with a crescent moon at her feet and the scroll of esoteric wisdom in her lap, guarding the veil of the subconscious.",
+        'celestial-gold': "Crowned with a glowing starburst diadem, the serene dark-haired high priestess sits upon a carved stone throne between two cosmic pillars—one shadowy obsidian and one sunlit gold. Draped in starry sapphire-grey robes, she unrolls the sacred cosmic scroll of hidden wisdom against an expanse of midnight nebulae.",
+        'soimoi': "A shrine maiden (miko) in white robes and red hakama with a sheathed katana at her back stands peacefully upon tranquil waters reflecting a crescent moon. Holding an unfurled sacred prayer scroll, she guards the quiet boundary between the physical realm and the spirit world with deep nocturnal intuition.",
+        'woodland-animal': "A wise, hooded owl sage in embroidered blue ceremonial robes sits quietly upon an ancient mossy stone seat between two towering birch tree pillars draped in gossamer veils. She reads from an illuminated grimoire beneath a silver crescent moon reflecting upon a nocturnal forest lake."
       },
       'major_3': {
         'rws': "Crowned with twelve twelve-pointed stars, holding a scepter of world dominion, and seated in ripe wheat fields beside a cascading waterfall. The embodiment of universal fecundity, unconditional love, and earthly bounty.",
-        'celestial-gold': "The cosmic queen of fruition surrounded by golden celestial auroras, blossoming astral roses, and overflowing starlight nectar, nurturing galaxies into bloom.",
-        'soimoi': "A self-assured, creative matriarch in a rooftop botanical garden oasis surrounded by steel towers, cultivating warmth, beauty, and abundant life amidst urban concrete.",
-        'woodland-animal': "A loving mother deer or gentle brown bear nestled in a sun-warmed clearing blanketed with wild strawberries, surrounded by affectionate forest offspring."
+        'celestial-gold': "Regal and maternal, the Empress is crowned with a radiant diadem of twelve golden stars, holding an imperial cross-topped orb scepter. She sits enthroned upon a stone seat carved with golden lions, enveloped in lush pomegranate branches and ripe wheat sheaves against a starlit twilight sky.",
+        'soimoi': "A noble Japanese lady in a rich terracotta-patterned kimono sits peacefully at the wooden veranda of a traditional garden pond surrounded by blooming pink peonies and golden wheat stalks. Dipping her bare feet into the water, with a golden halo shining behind her hair, she embodies creative nurture, natural harmony, and fertile grace.",
+        'woodland-animal': "A gentle white doe empress with flower-wreathed antlers sits upon a woven wicker throne beside a rushing forest waterfall. Holding a blooming pomegranate scepter, surrounded by wild raspberries, ripe ears of corn, and attentive forest offspring, she personifies unconditional care and natural abundance."
       },
       'major_4': {
         'rws': "Seated upon a cubic throne carved with Aries ram heads, armored in red tunic and holding the orb and ankh scepter. The principle of worldly authority, structural foundation, and sovereign law.",
-        'celestial-gold': "The sovereign astral ruler seated upon a throne of golden geometric symmetry, upholding the inviolable laws of cosmic order and planetary architecture.",
-        'soimoi': "A seasoned civic leader or master architect reviewing urban blueprints atop a skyscraper boardroom, establishing discipline, strategy, and enduring stability.",
-        'woodland-animal': "A majestic stag with towering branching antlers or a stalwart mountain grizzly, standing guardian over forest borders with calm authority and protective strength."
+        'celestial-gold': "An austere, bearded monarch crowned in gold and wrapped in a gold-embroidered royal blue mantle sits firmly upon an ancient stone throne carved with ram-head armrests. Holding an imperial golden orb scepter, he radiates steadfast cosmic governance and inviolable law against the starlit sky.",
+        'soimoi': "A commanding samurai lord in charcoal haori and hakama sits with composed authority before a gold folding screen depicting bonsai pine and a rising sun, flanked by stone guardian komainu. Holding a gold chrysanthemum gunbai war fan, he commands discipline, strategic mastery, and enduring stability.",
+        'woodland-animal': "A formidable grizzly bear emperor in silver plate armor and a royal purple mantle sits upon a massive stone throne carved with ram horns before snow-dusted mountain peaks. Gripping a tall scepter topped with a ram's skull, he governs the wilderness with calm strength and protective leadership."
       },
       'major_5': {
         'rws': "The Hierophant wears the triple papal crown and holds the triple cross, flanked by two sacred keys and blessing two kneeling priests. Guardian of sacred tradition and the bridge between human and divine wisdom.",
-        'celestial-gold': "High celestial pontiff holding the golden cosmic staff beneath starry cathedral arches, initiating seekers into the eternal mysteries of the constellations.",
-        'soimoi': "A wise academic mentor or cultural elder in an archival hall of heritage, preserving hard-won life lessons and ethical guidance for the next generation.",
-        'woodland-animal': "A venerable old badger or tortoise resting beside the ancient Great Oak, sharing ancestral woodland tales and seasonal lore with eager young forest pupils."
+        'celestial-gold': "A venerable pontiff in a jewel-encrusted papal tiara and star-embroidered sapphire cope sits on a golden cathedral throne, raising his right hand in sacred blessing while holding the triple-bar cross staff. Two acolytes kneel before him in devout prayer amidst glowing constellations and celestial halos.",
+        'soimoi': "A revered Zen master and Buddhist monk in saffron robes with prayer beads in hand sits serenely upon tatami mats before a hanging ink calligraphy scroll. Blessing two kneeling disciples with raised hands, he preserves sacred lineage, ethical tradition, and inner spiritual discipline.",
+        'woodland-animal': "An elephant pontiff in golden papal robes and mitre sits upon an ornate woodland dais, raising two fingers in solemn blessing while holding a tall golden pastoral staff. Two young creature novices kneel respectfully at his feet beside crossed brass keys, receiving ancestral wisdom and sacred lore."
       },
       'major_6': {
-        'rws': "Archangel Raphael blesses the union of the primal figures in Eden beneath the blazing sun, with the Tree of Life behind the man and the Tree of Knowledge behind the woman. Archetype of profound choice and spiritual harmony.",
-        'celestial-gold': "Two celestial souls meeting beneath entwined golden constellations and glowing nebulae, their hearts aligned under the radiant witness of twin cosmic suns.",
-        'soimoi': "Two figures sharing an umbrella beneath the warm glow of rain-drenched neon lanterns, finding genuine connection and aligned values amidst the rushing city crowds.",
-        'woodland-animal': "A pair of bonded swans or red foxes nestled cheek-to-cheek beside a tranquil woodland lake, surrounded by blooming water lilies and twilight fireflies."
+        'rws': "Archangel Raphael blesses the union of the primal figures in Eden beneath the blazing sun, with the Tree of Life behind the man and the Tree of Knowledge behind the woman. Archetype of profound choice, ethical alignment, and spiritual harmony.",
+        'celestial-gold': "A blindfolded winged cherub (Cupid) aims a golden arrow from above a glowing crescent moon, presiding over a handsome youth standing between two classical maidens draped in golden and crimson stolas. The scene evokes the Renaissance allegory of choice, divine love, and harmonious union under the stars.",
+        'soimoi': "A young man and woman in elegant yukata stand back-to-back upon a twilight wooden balcony, their little fingers intertwined by the glowing crimson red thread of fate (akai ito). With their faithful Shiba Inu watching nearby under a soft evening moon, they reflect heartfelt soulmate alignment and destined union.",
+        'woodland-animal': "Two ethereal butterfly-fairy spirits—one shimmering in sapphire blue and the other in radiant gold—stand hand-in-hand beneath a full moon and prismatic rainbow light in an enchanted meadow, surrounded by blooming nocturnal flora and guiding stars."
       },
       'major_7': {
         'rws': "A victorious armored prince stands in his chariot beneath a canopy of stars, guided by two opposing sphinxes of black and white. Triumph achieved through self-mastery, focused will, and balancing conflicting forces.",
-        'celestial-gold': "A golden cosmic chariot pulled by celestial steeds traversing comet paths, driven forward by unbroken mental focus and aligned stellar determination.",
-        'soimoi': "A focused motorcyclist or urban driver navigating high-speed highways through torrential neon rain, propelled forward by sheer ambition and unwavering direction.",
-        'woodland-animal': "A courageous wild hare or swift young wolf leaping across swollen streams and tangled roots, steering through forest challenges with sharp instinct."
+        'celestial-gold': "A noble dark-cloaked charioteer stands within an ornate golden wooden chariot beneath a star-canopied pavilion, steering two surging steeds—one gleaming golden-white and the other midnight black—across the night under a glowing full moon.",
+        'soimoi': "A resolute ronin warrior with topknot in the falling rain drives forward with unwavering will, gripping the crimson reins of two charging mythical spirit wolves—one glowing fiery vermilion and the other icy cyan—channeling contradictory impulses into focused victory.",
+        'woodland-animal': "A brave canine champion in polished silver armor stands in a winged golden chariot drawn by twin wolves—one white bearing a sun sigil, one black bearing a moon emblem—leaping across forest ridges with bold momentum and purposeful focus."
       },
       'major_8': {
         'rws': "A gentle maiden crowned with the lemniscate of eternity softly closes the jaws of a fierce red lion with floral garlands. Inner spiritual power, patient courage, and compassion triumphing over brute instinct.",
-        'celestial-gold': "An astral maiden glowing with celestial starlight caressing a constellation lion, proving that gentle spiritual harmony holds greater power than cosmic fury.",
-        'soimoi': "A calm, dignified woman pacifying hostility and urban friction through empathy, emotional poise, and resolute inner strength in the bustling city.",
-        'woodland-animal': "A tiny songbird or field mouse fearlessly perched atop the head of a slumbering grizzly bear, embodying the quiet power of gentleness over physical might."
+        'celestial-gold': "A graceful maiden in a deep blue gown crowned with a glowing golden infinity halo tenderly strokes the head and chin of a majestic, fully pacified lion under a starlit vault (numbered XI in the traditional French/Marseille canon followed by this artist), embodying the triumph of serene love over primal fury.",
+        'soimoi': "A calm, elegant woman in a flowing kimono gently caresses the muzzle of a radiant golden mythical spirit lion (shishi) in a tranquil temple garden, meeting raw power with fearless grace, gentle patience, and unwavering inner peace.",
+        'woodland-animal': "A gentle fairy maiden in gossamer wings softly touches the cheek of a seated, regal lion clad in purple royal robes, illustrating that kindness, trust, and gentle patience possess far greater power than claws and teeth."
       },
       'major_9': {
         'rws': "The solitary sage in monastic cowl stands upon an icy mountain peak, holding the staff of truth and a lantern glowing with the six-pointed Seal of Solomon. The pursuit of introspection and inner light.",
-        'celestial-gold': "A cosmic pilgrim floating through quiet stellar voids, carrying a miniature golden sun in a filigree lantern to illuminate personal enlightenment.",
-        'soimoi': "A solitary nighttime traveler sitting by the window of an all-night diner with a warm cup of coffee, searching their conscience away from the city's noise.",
-        'woodland-animal': "A quiet hedgehog or land turtle carrying a glowing acorn lamp down a winding forest path, seeking quiet reflection in solitary mossy hollows."
+        'celestial-gold': "An elderly, bearded ascetic in a dark hooded cowl stands upon a rocky mountain ledge under a vast constellation sky, holding a knotted wooden pilgrim's staff and raising a golden lantern that radiates a six-pointed beacon of divine inner wisdom.",
+        'soimoi': "A hooded yamabushi mountain ascetic in travelling garments walks down the mossy stone steps of a misty mountain shrine at dusk, carrying a wooden staff and a warm glowing paper lantern, accompanied by a quiet red fox spirit guiding the path inward.",
+        'woodland-animal': "A patient hedgehog pilgrim in a brown hooded traveling cloak walks along a snow-dusted forest ridge at twilight, carrying a turtle-headed staff and a brass oil lantern glowing with warm golden light, searching for quiet contemplation away from the world."
       },
       'major_10': {
         'rws': "The Wheel of Destiny bearing Hebrew letters and alchemy symbols, flanked by the Angel, Eagle, Lion, and Ox holding open books, with Hermanubis and Typhon presiding over eternal cyclic change.",
-        'celestial-gold': "A magnificent golden astrolabe and planetary zodiac wheel revolving across starlit galaxies, governing karmic cycles and destined turning points.",
-        'soimoi': "The rhythmic turning of subway turnstiles, illuminated clock faces, and stock tickers in the city square, reflecting the rapid shifts of urban fortune.",
-        'woodland-animal': "The grand cycle of the four seasons turning across the forest floor: green spring shoots, summer warmth, autumn acorns, and winter rest."
+        'celestial-gold': "A magnificent, intricately carved golden astrolabe wheel inscribed with astrological planetary symbols turns amidst ornate filigree. Above it sit an angelic winged lion, a horned demon ruler, and a griffin, while twin dragons turn the lower spokes, governing cosmic destiny and inevitable turning points.",
+        'soimoi': "A hooded seeker kneels reverently beside a stone temple koi pond beneath a floating, glowing circular wheel depicting the Four Sacred Guardian Spirits (Kitsune, Suzaku, Genbu, Seiryu), reminding us that all worldly fortunes rise and fall like water ripples.",
+        'woodland-animal': "An industrious squirrel in a starry astrologer's mantle stands before an enormous carved wooden zodiac wheel adorned with planetary symbols, surrounded by floating golden acorns, pinecones, and seasonal leaves turning in rhythmic forest harmony."
       },
       'major_11': {
         'rws': "Seated between stone pillars holding the upright double-edged sword of discernment in her right hand and the balanced scales in her left. Universal law, fairness, and accountability.",
-        'celestial-gold': "An astral arbitress weighing stellar constellations in perfect golden balance beneath celestial pillars of eternal cosmic truth.",
-        'soimoi': "A dignified figure outside civic courthouse columns under clear streetlamps, demanding honesty, fairness, and moral integrity in modern society.",
-        'woodland-animal': "A wise horned owl perched on a high branch holding balanced twigs, dispensing fair, objective judgment to resolve forest disputes."
+        'celestial-gold': "An austere, dark-haired arbitress draped in crimson and sapphire robes sits upon a carved stone throne beneath the starfields (numbered VIII in the artist's traditional Marseille sequence), holding an upright golden sword of truth in her right hand and balanced golden scales in her left.",
+        'soimoi': "A dignified, sharp-eyed woman in an embroidered crimson kimono sits composed between glowing stone lanterns, holding a drawn katana blade perfectly upright in one hand and brass balance scales in the other, measuring truth and accountability with unflinching clarity.",
+        'woodland-animal': "A noble eagle in a golden breastplate perches with sovereign dignity atop a stone pedestal beneath the forest canopy, grasping a pair of perfectly balanced golden scales in its talons while holding a shining upright sword of clear discernment."
       },
       'major_12': {
         'rws': "Suspended by one foot from a T-shaped living wooden cross, his free leg crossed in a figure 4, with a radiant golden halo illuminating his peaceful face. Spiritual surrender, voluntary sacrifice, and transformed perspective.",
-        'celestial-gold': "An astral figure floating weightless upside down within a glowing golden mandala ring, seeing cosmic truth revealed through mindful release of control.",
-        'soimoi': "An urban commuter calmly paused in mid-motion on a subway rail or fire escape landing, choosing stillness while the rushing city whirls past.",
-        'woodland-animal': "A playful bat or young possum hanging upside down from a weeping willow branch, happily viewing the forest from a fresh and peaceful angle."
+        'celestial-gold': "A serene, draped figure hangs suspended upside-down by one foot from the bare branch of an ancient gnarled tree against a glowing crescent moon and starfield, arms crossed peacefully over the chest in enlightened surrender and transformed consciousness.",
+        'soimoi': "A young ninja or samurai in dark hakama hangs peacefully upside-down by one ankle from a blossoming cherry tree in a lantern-lit courtyard above a rippling stream, hands clasped serenely with a torii gate in the background, viewing the world from a state of suspended stillness.",
+        'woodland-animal': "A gentle fruit bat hangs upside-down by one foot from an arching willow branch against a starry night sky, with a luminous golden halo glowing behind its head as it peacefully views the forest from a quiet, inverted perspective."
       },
       'major_13': {
         'rws': "An armored skeleton carrying the black banner of the five-petaled Mystic Rose rides across the fallen, while the sun rises eternally between two distant towers. Profound transformation, letting go, and inevitable rebirth.",
-        'celestial-gold': "The celestial reaper guiding the peaceful collapse of old dying stars into supernova dust, clearing cosmic space for new solar systems to ignite.",
-        'soimoi': "A lone traveler walking through dawn mist as city streetlights click off, closing an old chapter with dignity to make way for a fresh beginning.",
-        'woodland-animal': "Crisp autumn leaves falling gently around old birch logs, as nature naturally sheds the worn-out past to nourish soil for spring blooms."
+        'celestial-gold': "A crowned skeletal reaper in tattered hooded robes stands amid a field of bones and skulls, grasping a curved golden scythe under a luminous crescent moon and swirling cosmic clouds, marking the sacred cycle of endings that births new stars.",
+        'soimoi': "An enigmatic figure in a pale noh theater mask and crimson kimono stands among falling autumn momiji leaves holding twin curved harvesting kama scythes, as a brilliant flaming golden phoenix (ho-oh) ascends into the night sky beside two white cranes, symbolizing radiant spiritual rebirth.",
+        'woodland-animal': "A hooded raven psychopomp in a dark cowl stands with a wooden staff beside an ancient mossy tombstone where tender green sprouts emerge from fallen leaves, calmly guiding forest souls from the worn-out past into natural renewal."
       },
       'major_14': {
         'rws': "A winged solar angel pours the elixir of life between two golden chalices with one foot on earth and one in water, with a winding path leading to a radiant crown on the horizon. Alchemy, moderation, and sacred balance.",
-        'celestial-gold': "A golden-winged seraph harmonizing streams of liquid solar light and lunar water between celestial vessels, creating harmonious astral equilibrium.",
-        'soimoi': "A skilled barista or chemist in a warm cafe blending elements with measured grace, maintaining emotional calm and centered lifestyle amidst stress.",
-        'woodland-animal': "A graceful blue heron standing poised in stream waters, balancing water and air with tranquil patience and natural flow."
+        'celestial-gold': "A luminous silver-haired angel in star-embroidered indigo robes pours a glowing stream of liquid golden light between two golden chalices, standing with one foot in clear water and one on shore beneath a brilliant star of divine harmony.",
+        'soimoi': "A graceful Japanese woman in a pale kimono kneels in a tranquil bamboo grove performing a mindful tea ceremony (chado), pouring steaming water into a ceramic chawan bowl as glowing origami cranes hover peacefully around her under paper lanterns.",
+        'woodland-animal': "A majestic white swan in purple clerical vestments stands gracefully at the edge of a bubbling forest stream, pouring an iridescent rainbow ribbon of living water between two golden chalices in perfect natural equilibrium."
       },
       'major_15': {
         'rws': "The horned satyr sits upon an altar with two naked figures loosely chained by their necks. The chains are large enough to be slipped off at will, representing voluntary entrapment by materialism and fear.",
-        'celestial-gold': "A shadowy astral titan wielding golden tether chains of cosmic illusion, enticing wandering spirits to mistake earthly shadows for true starlight.",
-        'soimoi': "The hypnotic lure of neon billboards, endless smartphone feeds, and commercial excesses that trap city denizens in cycles of craving and anxiety.",
-        'woodland-animal': "A cunning spider or sly serpent weaving glittering webs around tempting berry bushes, warning animals against tempting illusions and traps."
+        'celestial-gold': "A horned, winged goat-headed arch-fiend sits enthroned upon a dark altar holding a golden sun-scepter, flanked by two small horned satyr acolytes chained loosely at his feet beneath glowing lunar crescents and midnight skies.",
+        'soimoi': "A brooding man in dark indigo kimono sits before a low wooden table with spilled sake, smoking incense, and heavy iron chains, dominated by a towering, red-eyed Oni demon mask mounted on the wall, warning against the trap of toxic attachments and runaway desires.",
+        'woodland-animal': "A formidable winged mountain goat with curling horns sits upon a shadowy forest crag, pouring crimson wine between two chalices while a young fox and kid goat are loosely tethered by chains they could easily slip off if they chose."
       },
       'major_16': {
         'rws': "A flash of divine lightning strikes the golden crown of a stone fortress on a jagged mountain peak, toppling false security as two figures fall into the abyss. Breakthrough, revelation, and false foundations shattered.",
-        'celestial-gold': "A golden cosmic citadel shattered by a brilliant bolt of stellar lightning, tearing through rigid astral illusions to reveal the unvarnished universe.",
-        'soimoi': "A glass skyscraper facade shattered by a sudden urban storm and blackout, jolting people out of complacency into urgent personal awakening.",
-        'woodland-animal': "A sudden summer thunderstorm where lightning fells a dead, hollow hollowed-out tree, breaking old blockages so sunlight can reach the forest floor."
+        'celestial-gold': "A colossal stone watchtower atop a sea cliff is shattered by a dazzling bolt of celestial lightning, the battlement exploding in flames and falling stones as shadowy figures fall toward the surging ocean below under tempestuous skies.",
+        'soimoi': "A multi-tiered Japanese temple pagoda built upon a jagged cliff is struck squarely by a dazzling zigzag of lightning, sending sparks and timber flying into the night as a startled white crane takes flight away from the crumbling structure.",
+        'woodland-animal': "A tall hollow stone watchtower splits apart as a blinding summer lightning strike hits the crown, sending fiery sparks across the forest as a flying squirrel glides away into the stormy night sky to escape the collapse of false safety."
       },
       'major_17': {
         'rws': "A maiden kneels beside a tranquil pool pouring waters of life onto land and sea under an eight-pointed golden star and seven lesser stars, as an ibis rests in a nearby tree. Pure inspiration, hope, and spiritual renewal.",
-        'celestial-gold': "A radiant starlight goddess pouring liquid stardust into the cosmic sea beneath brilliant star clusters, recharging weary souls with boundless hope.",
-        'soimoi': "A late-night dreamer gazing up from a wet fire escape at a single brilliant star piercing through city smog, finding rekindled faith in the future.",
-        'woodland-animal': "A gentle fawn drinking from a woodland pool reflecting the glittering North Star, surrounded by glowing fireflies in peaceful nighttime meadows."
+        'celestial-gold': "A graceful maiden crowned with white lilies kneels by a nocturnal spring pouring liquid starlight from a silver urn into the waters and from a golden urn onto the fertile earth, beneath a radiant eight-pointed celestial star and seven attendant stars.",
+        'soimoi': "A young woman in a crimson kimono carrying a traveler's knapsack reaches her hand toward a brilliant eight-pointed guiding star in an indigo sky, as stardust flows into her clay water jug and glowing origami paper cranes flutter around hanging wisteria blossoms.",
+        'woodland-animal': "An iridescent peacock in emerald and cobalt plumage stands beside a crystal woodland spring beneath a constellation sky, pouring shimmering stream water from dual golden vessels into the pool, inspiring boundless hope and creative renewal."
       },
       'major_18': {
         'rws': "A dog and wolf bay at the full moon shedding drops of dew, while a crayfish crawls from the primeval pool past twin watchtowers. The realm of dreams, deep instinct, illusion, and subconscious shadow work.",
-        'celestial-gold': "The triple moon goddess radiating luminous golden phases over a mist-veiled ocean of starlight, illuminating the mysteries of the cosmic subconscious.",
-        'soimoi': "A rain-drenched neon alleyway where reflections in murky puddles play tricks on the eyes, confronting late-night urban anxieties and illusions.",
-        'woodland-animal': "A lone grey wolf howling from a mist-shrouded forest cliff under the glowing harvest moon, listening to deep ancient survival instincts."
+        'celestial-gold': "Two ornate gold-patterned hounds sit upon rocky banks howling up at a brilliant full moon nestled within celestial constellations, while a golden crayfish crawls upward from the nocturnal waters below.",
+        'soimoi': "An enigmatic woman in dark blue kimono and wooden geta walks along a stone pathway through a dense bamboo grove under a luminous full moon, hiding her smile behind a painted fan with a kitsune mask at her hip, accompanied by two black cats prowling between stone lanterns.",
+        'woodland-animal': "A silver wolf stands upon a mossy riverbank howling at a giant moon bearing a gentle face between two mossy stone watchtowers, as an otter and a crayfish gaze up from the moonlit waters, attuning to primal instinct and nocturnal dreams."
       },
       'major_19': {
         'rws': "A joyful child crowned with flowers and red feather rides a gentle white steed beneath the blazing golden sun and towering sunflowers. Unabashed joy, clarity, vitality, and triumphant success.",
-        'celestial-gold': "A radiant golden solar deity showering the cosmos in golden solar flares and blooming starlight sunflowers, radiating warmth and supreme clarity.",
-        'soimoi': "Crisp morning sunlight streaming down broad city avenues, banishing shadows and energizing pedestrians with optimism, laughter, and renewal.",
-        'woodland-animal': "Playful river otters and chirping yellow songbirds frolicking in sun-warmed meadow springs surrounded by blooming golden buttercups."
+        'celestial-gold': "A pure, golden-haired child in a white tunic rides bareback upon a gentle white steed through a vibrant garden of blooming sunflowers, bathed in the warmth of a radiant golden solar halo and starlight skies.",
+        'soimoi': "Two joyful Japanese children in colorful yukata run hand-in-hand with beaming smiles along a sun-drenched wooden boardwalk under a gigantic blazing golden sun, flanked by blooming sunflowers and fluttering carp streamers (koinobori).",
+        'woodland-animal': "A joyful golden songbird with wings spread wide sings atop a field of towering, blooming sunflowers beneath a radiant smiling sun, while happy woodland puppies frolic in the warm meadow grass below."
       },
       'major_20': {
         'rws': "Archangel Gabriel sounds the great banner horn from heaven; figures rise with joyful outstretched arms from stone sarcophagi, answering their higher spiritual calling. Rebirth, absolution, and clear awakening.",
-        'celestial-gold': "A cosmic herald sounding a golden stellar trumpet across galaxies, calling awakened spirits to rise into their true higher celestial purpose.",
-        'soimoi': "A watershed moment of self-forgiveness and realization beneath morning traffic lights, letting go of past missteps to step boldly into one's true vocation.",
-        'woodland-animal': "A chorus of migrating geese calling down through mountain valleys at dawn, heralding the forest's joyful awakening after deep winter snows."
+        'celestial-gold': "A solemn, dark-haired arbitress draped in flowing indigo robes sits upon a weathered stone throne beneath the night sky, holding an upright golden sword of discernment in one hand and the balanced scales of karmic reckoning in the other, presiding over the moment of ultimate spiritual awakening.",
+        'soimoi': "A temple priest in white robes strikes a massive bronze temple bell (bonshō) suspended beneath a grand wooden torii gate at sunset, sending resonant booms across misty valleys as a spiral of luminous spirit cranes ascends toward the twilight sky above blooming lotus blossoms.",
+        'woodland-animal': "A divine golden hawk/falcon perched upon an ancient sunlit branch sounds a horn of golden light across the forest valleys, awakening woodland creatures from their winter slumber into joyful new purpose and renewed life."
       },
       'major_21': {
         'rws': "A dancing maiden holding twin wands is encircled by the green laurel wreath of victory, flanked by the four fixed zodiac signs (Man, Eagle, Lion, Bull). Completion, wholeness, cosmic achievement, and cosmic integration.",
-        'celestial-gold': "An astral dancer encircled by the glowing golden celestial Ouroboros across infinite starfields, celebrating the joyful completion of the cosmic voyage.",
-        'soimoi': "Standing at the summit observation deck at sunrise with full 360-degree views of the waking city, having mastered the urban labyrinth.",
-        'woodland-animal': "A jubilant circle of forest animals holding hands around the ancient Mother Tree under a twilight sky, living in joyful harmony with the wild world."
+        'celestial-gold': "A graceful celestial maiden enveloped in flowing translucent starlight veils dances inside an oval golden laurel wreath holding a golden wand, flanked in the corners by the winged celestial guardians (Angel, Winged Lion, Eagle), embodying cosmic integration.",
+        'soimoi': "A celestial maiden in flowing robes and a golden hagoromo scarf dances weightlessly within a circular golden aura above mystical mountain mist and a reflective pool, surrounded by the Four Celestial Guardians (Azure Dragon, White Tiger, Black Tortoise, and Vermilion Bird).",
+        'woodland-animal': "A celestial blue whale enveloped in a purple mantle leaps gracefully within an oval wreath of forest flora and pomegranates against the starlit sky, surrounded by the four sacred guardians (Woodland Lion, Eagle, Bull, and Sage), celebrating universal harmony and wholeness."
       }
     };
 
@@ -1277,32 +1277,32 @@ function initMyTarotApp() {
 
       if (deckId === 'celestial-gold') {
         const suitTheme = {
-          'wands': 'Golden solar torches flaming with stellar plasma and fiery cosmic ambition.',
-          'cups': 'Luminous golden chalices brimming with cosmic starlight nectar and divine compassion.',
-          'swords': 'Blades forged of starlight constellations and crystalline truth, cutting through cosmic illusions.',
-          'pentacles': 'Golden planetary coins inscribed with celestial geometry and sacred earthly abundance.'
+          'wands': 'Golden celestial torches flaming with solar plasma and celestial ambition.',
+          'cups': 'Luminous golden chalices filled with starlight nectar and divine compassion.',
+          'swords': 'Blades forged of diamond starlight and cosmic truth, cutting through astral illusions.',
+          'pentacles': 'Golden planetary coins inscribed with sacred celestial geometry and earthly abundance.'
         }[suit] || 'Celestial artifacts.';
         return `Rendered in rich golden filigree against deep midnight starlight. Here, ${card.name} is envisioned through ${suitTheme} Every golden arch and celestial starfield motif frames the card as a sacred astral conduit.`;
       }
 
       if (deckId === 'soimoi') {
         const suitTheme = {
-          'wands': 'Creative hustle, midnight studio breakthroughs, startup ambitions, and neon passions.',
-          'cups': 'Intimate corner cafes, rainy umbrella conversations, nightlife bonds, and private emotional depth.',
-          'swords': 'Sharp city realities, complex legal or mental dilemmas, high-stress transit, and resilient clarity.',
-          'pentacles': 'Urban architecture, financial careers, artisans at work, and grounding roots in the bustling metropolis.'
-        }[suit] || 'Urban street scenes.';
-        return `A cinematic Neo-Tokyo urban noir interpretation. ${card.name} translates traditional archetypes into ${suitTheme} Rain reflections and neon streetlamps ground this card in contemporary emotional authenticity.`;
+          'wands': 'Bamboo staves, kagura sacred flames, ofuda paper charms, and focused spiritual purpose.',
+          'cups': 'Ceramic chawan teabowls, lacquered sake cups, garden koi ponds, and tender emotional bonds.',
+          'swords': 'Folded steel katana blades, autumn momiji leaves, clear discernment, and bushido discipline.',
+          'pentacles': 'Golden Tomoe crest coins, stone garden lanterns, tanuki guardians, and enduring craftsmanship.'
+        }[suit] || 'Japanese folklore scenes.';
+        return `An atmospheric Japanese folklore and twilight ukiyo-e aesthetic interpretation. ${card.name} translates traditional archetypes into ${suitTheme} Serene twilight colors, paper lanterns, and spirit motifs ground this card in timeless folkloric resonance.`;
       }
 
       if (deckId === 'woodland-animal') {
         const suitTheme = {
-          'wands': 'Birch branches, campfire warmth, energetic forest runs, and animal seasonal migration.',
-          'cups': 'Clear bubbling river springs, shared wild berries, and gentle woodland family bonds.',
-          'swords': 'Keen animal instincts, defensive quills, raptor flight, and navigating bramble thickets.',
-          'pentacles': 'Gathered autumn acorns, cozy burrows, fertile mossy glades, and nature’s generous bounty.'
+          'wands': 'Flowering birch staves, cozy campfires, joyful animal vigor, and spirited forest journeys.',
+          'cups': 'Bubbling woodland springs, shared sweet berries, floral dew chalices, and loving forest family bonds.',
+          'swords': 'Keen raptor talons, defensive hedge-quills, silver-forged blades, and sharp instinct navigating the thickets.',
+          'pentacles': 'Harvested autumn acorns, carved wooden crests, fertile mossy hollows, and generous earth abundance.'
         }[suit] || 'Woodland flora and fauna.';
-        return `A charming storybook fable where ${card.name} is embodied by ${suitTheme} Gentle creature companions and rich botanical illustrations bring an innocent, grounded wisdom to this reading.`;
+        return `A charming Japanese storybook fable where ${card.name} is embodied by ${suitTheme} Gentle anthropomorphic creature companions and rich botanical illustrations bring an innocent, grounded wisdom to this reading.`;
       }
 
       return card.meaning_upright;
