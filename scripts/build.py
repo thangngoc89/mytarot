@@ -58,6 +58,36 @@ def inject_version(file_path, version_str):
             f.write(new_content)
 
 
+def inject_cache_busters(file_path, cache_id):
+    """Appends ?v={cache_id} to CSS and JS asset references in HTML to bust browser cache."""
+    if not os.path.exists(file_path):
+        return
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # css/metallic_winter.css
+    content = re.sub(
+        r'(href=[\'"]css/metallic_winter\.css)(?:\?v=[^\'"]*)?([\'"])',
+        rf'\g<1>?v={cache_id}\g<2>',
+        content,
+    )
+    # data/tarot_dataset.js
+    content = re.sub(
+        r'(src=[\'"]data/tarot_dataset\.js)(?:\?v=[^\'"]*)?([\'"])',
+        rf'\g<1>?v={cache_id}\g<2>',
+        content,
+    )
+    # js/app.js
+    content = re.sub(
+        r'(src=[\'"]js/app\.js)(?:\?v=[^\'"]*)?([\'"])',
+        rf'\g<1>?v={cache_id}\g<2>',
+        content,
+    )
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
 def build():
     print(f"🚀 Building SPA artifact to docs/ for GitHub Pages...")
     if not os.path.isdir(STATIC_DIR):
@@ -67,8 +97,14 @@ def build():
     version_str = get_version_string()
     print(f"🔖 Version: {version_str}")
 
-    # Ensure source index.html has the updated version
+    # Create a compact alphanumeric cache buster token from version string
+    cache_id = re.sub(r"[^a-zA-Z0-9]", "", version_str)
+    if not cache_id:
+        cache_id = datetime.datetime.now().strftime("%Y%m%d%H%M")
+
+    # Ensure source index.html has the updated version & cache busters
     inject_version(os.path.join(STATIC_DIR, "index.html"), version_str)
+    inject_cache_busters(os.path.join(STATIC_DIR, "index.html"), cache_id)
 
     os.makedirs(DOCS_DIR, exist_ok=True)
 
@@ -76,8 +112,9 @@ def build():
     print(f"📁 Copying static assets from {STATIC_DIR} to {DOCS_DIR}...")
     shutil.copytree(STATIC_DIR, DOCS_DIR, dirs_exist_ok=True)
 
-    # Inject version into docs/index.html as well
+    # Inject version and cache busters into docs/index.html as well
     inject_version(os.path.join(DOCS_DIR, "index.html"), version_str)
+    inject_cache_busters(os.path.join(DOCS_DIR, "index.html"), cache_id)
 
     # Ensure .nojekyll exists so GitHub Pages does not run Jekyll
     nojekyll_path = os.path.join(DOCS_DIR, ".nojekyll")

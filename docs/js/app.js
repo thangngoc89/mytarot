@@ -1,5 +1,5 @@
 // MyTarot - Metallic Winter SPA Logic (100% Client-Side Static Engine)
-document.addEventListener('DOMContentLoaded', () => {
+function initMyTarotApp() {
   // Ensure dataset is loaded from window.TAROT_DATASET or fallback fetch
   let tarotDataset = window.TAROT_DATASET || [];
 
@@ -1012,6 +1012,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const modalBtnCompareCard = document.getElementById('modal-btn-compare-card');
+  if (modalBtnCompareCard) {
+    modalBtnCompareCard.addEventListener('click', () => {
+      if (state.modalActiveCardItem && state.modalActiveCardItem.card) {
+        const cardId = state.modalActiveCardItem.card.id;
+        closeCardModal();
+        if (typeof window.openDeckCompare === 'function') {
+          window.openDeckCompare(cardId);
+        }
+      }
+    });
+  }
+
   // ==========================================
   // RESET / NEW READING
   // ==========================================
@@ -1713,7 +1726,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Modal Open & Close Functions
-    function openDeckCompare() {
+    function openDeckCompare(cardIdOrIndex) {
+      if (!tarotDataset || !tarotDataset.length) {
+        if (window.TAROT_DATASET && window.TAROT_DATASET.length) {
+          tarotDataset = window.TAROT_DATASET;
+        }
+      }
+      if (!tarotDataset || !tarotDataset.length) {
+        ensureDatasetLoaded().then(() => {
+          openDeckCompare(cardIdOrIndex);
+        });
+        return;
+      }
+
+      if (typeof cardIdOrIndex === 'string') {
+        const found = tarotDataset.findIndex(c => c.id === cardIdOrIndex);
+        if (found !== -1) compareActiveIndex = found;
+      } else if (typeof cardIdOrIndex === 'number') {
+        compareActiveIndex = cardIdOrIndex;
+      }
+
       populateCardSelect();
       renderCompareCard(compareActiveIndex, true);
       deckCompareModal.classList.remove('hidden');
@@ -1724,6 +1756,10 @@ document.addEventListener('DOMContentLoaded', () => {
       hideSuggestions();
       closeLightbox();
     }
+
+    // Expose functions globally on window for inline handlers & external integrations
+    window.openDeckCompare = openDeckCompare;
+    window.closeDeckCompare = closeDeckCompare;
 
     if (btnOpenDeckCompare) {
       btnOpenDeckCompare.addEventListener('click', openDeckCompare);
@@ -1785,4 +1821,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize deck comparison feature
   setupDeckCompareFeature();
-});
+}
+
+// Robust bootstrap: Execute immediately if DOM is already ready, otherwise on DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMyTarotApp);
+} else {
+  initMyTarotApp();
+}

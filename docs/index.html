@@ -8,7 +8,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Custom Metallic Winter Stylesheet -->
-  <link rel="stylesheet" href="css/metallic_winter.css">
+  <link rel="stylesheet" href="css/metallic_winter.css?v=v20261029539d864">
 </head>
 <body class="p-4 md:p-8">
 
@@ -33,9 +33,9 @@
           <span>🎴</span>
           <span id="header-active-deck-badge" class="font-cinzel font-bold">Rider-Waite-Smith (1909)</span>
         </div>
-        <button id="btn-header-deck-compare" type="button" class="flex items-center gap-1.5 bg-slate-900/60 hover:bg-cyan-950/60 px-3 py-1.5 rounded-lg border border-cyan-500/30 text-cyan-300 hover:text-white transition-colors cursor-pointer" title="Compare any card across 4 deck styles">
-          <span>🗂️</span>
-          <span>Compare Decks</span>
+        <button id="btn-header-deck-compare" type="button" onclick="window.openDeckCompare && window.openDeckCompare()" class="flex items-center gap-1.5 bg-slate-900/60 hover:bg-cyan-950/60 px-3 py-1.5 rounded-lg border border-cyan-500/30 text-cyan-300 hover:text-white transition-colors cursor-pointer" title="Compare any card across 4 deck styles">
+          <span class="pointer-events-none">🗂️</span>
+          <span class="pointer-events-none">Compare Decks</span>
         </button>
         <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -76,12 +76,12 @@
             <div>
               <label class="text-xs font-bold uppercase tracking-wider text-cyan-200 block">2. Pick Your Tarot Deck Vibe (Full 78-Card Decks)</label>
             </div>
-            <button id="btn-open-deck-compare" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-400/50 bg-slate-900/80 hover:bg-cyan-950/70 hover:border-cyan-300 text-cyan-300 hover:text-white text-xs font-semibold transition-all shadow-sm cursor-pointer group" title="Search and compare any card across all 4 deck vibes">
-              <svg class="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="btn-open-deck-compare" type="button" onclick="window.openDeckCompare && window.openDeckCompare()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-400/50 bg-slate-900/80 hover:bg-cyan-950/70 hover:border-cyan-300 text-cyan-300 hover:text-white text-xs font-semibold transition-all shadow-sm cursor-pointer group" title="Search and compare any card across all 4 deck vibes">
+              <svg class="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
               </svg>
-              <span>Compare Card Across Decks</span>
-              <span class="text-[10px] bg-cyan-950 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-700/50">4 Vibes</span>
+              <span class="pointer-events-none">Compare Card Across Decks</span>
+              <span class="text-[10px] bg-cyan-950 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-700/50 pointer-events-none">4 Vibes</span>
             </button>
           </div>
 
@@ -422,7 +422,7 @@
       </div>
       <div class="flex items-center gap-2 font-mono text-[11px] text-slate-400 bg-slate-900/60 px-2.5 py-1 rounded-md border border-slate-800">
         <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span id="app-version">v2026.10.27 (82c58c5)</span>
+        <span id="app-version">v2026.10.29 (539d864)</span>
       </div>
     </footer>
 
@@ -451,10 +451,14 @@
         </div>
       </div>
 
-      <div class="flex flex-col gap-2 border-t border-slate-700/60 pt-4">
-        <button id="modal-btn-get-clue" type="button" class="btn-metallic w-full py-3 text-sm flex items-center justify-center gap-2 cursor-pointer font-bold shadow-lg">
+      <div class="flex flex-col sm:flex-row gap-2 border-t border-slate-700/60 pt-4">
+        <button id="modal-btn-get-clue" type="button" class="btn-metallic flex-1 py-3 text-sm flex items-center justify-center gap-2 cursor-pointer font-bold shadow-lg">
           <span>🔍</span>
           <span>Get More Clue on this Card →</span>
+        </button>
+        <button id="modal-btn-compare-card" type="button" class="px-4 py-2.5 text-xs font-semibold rounded-xl border border-cyan-500/40 bg-slate-900/80 hover:bg-cyan-950/70 text-cyan-300 hover:text-white transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md" title="Compare this card artwork across all 4 deck vibes">
+          <span>🗂️</span>
+          <span>Compare Across Decks</span>
         </button>
       </div>
     </div>
@@ -691,7 +695,7 @@
     </div>
   </div>
 
-  <script src="data/tarot_dataset.js"></script>
-  <script src="js/app.js"></script>
+  <script src="data/tarot_dataset.js?v=v20261029539d864"></script>
+  <script src="js/app.js?v=v20261029539d864"></script>
 </body>
 </html>
