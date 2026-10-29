@@ -43,9 +43,12 @@ def build_tasks():
     tasks = []  # (deck_id, target_filename, url)
 
     # 1. Celestial Gold (reginanka/tarot-cards, CC BY 4.0)
+    # Note: Reginanka followed Marseille numbering (m08=Justice, m11=Strength).
+    # We map m11 -> major_08 (Strength) and m08 -> major_11 (Justice) to align with RWS IDs.
     cg_base = "https://raw.githubusercontent.com/reginanka/tarot-cards/main/cards"
     for i in range(22):
-        tasks.append(("celestial-gold", f"major_{i:02d}.jpg", f"{cg_base}/m{i:02d}.webp"))
+        src_i = 11 if i == 8 else (8 if i == 11 else i)
+        tasks.append(("celestial-gold", f"major_{i:02d}.jpg", f"{cg_base}/m{src_i:02d}.webp"))
     cg_suits = {"wands": "w", "cups": "c", "swords": "s", "pentacles": "p"}
     for suit_key, prefix in cg_suits.items():
         for rank in range(1, 15):
